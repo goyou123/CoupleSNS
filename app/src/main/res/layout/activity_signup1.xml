@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Signup1Activity">
+
+    <TextView
+        android:id="@+id/Textview_Signup1_num1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  1  "
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/Textview_Signup1_num2"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+        android:textColor="@color/maincolor"
+        android:background="@drawable/coner_main"
+        />
+    <TextView
+        android:id="@+id/Textview_Signup1_num2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textColor="@color/textcolor2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/Textview_Signup1_num1"
+       app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/Textview_Signup1_Maintext"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+        />
+<!--    <TextView-->
+<!--        android:id="@+id/Textview_Signup1_num3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="3"-->
+<!--        android:textColor="@color/textcolor2"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/Textview_Signup1_num2"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:textSize="20sp"-->
+<!--        />-->
+    <TextView
+        android:id="@+id/Textview_Signup1_Maintext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/Textview_Signup1_num2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="커플끼리에 처음 오신 것을 환영합니다!\n 회원으로 가입해주세요."
+        android:textSize="18sp"
+        android:textColor="@color/textcolor"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/EditText_Signup1_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/Textview_Signup1_Maintext"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:layout_marginTop="10dp"
+        android:hint="이름"
+        android:layout_marginHorizontal="25dp"
+        />
+
+    <EditText
+        android:id="@+id/EditText_Signup1_Email"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_Name"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+
+        android:layout_marginTop="10dp"
+        android:hint="이메일"
+        android:layout_marginHorizontal="25dp"
+
+        />
+    <Button
+        android:id="@+id/Button_SignUp_EmailCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="중복확인"
+        app:layout_constraintTop_toTopOf="@id/EditText_Signup1_Email"
+        app:layout_constraintBottom_toBottomOf="@id/EditText_Signup1_Email"
+        app:layout_constraintLeft_toRightOf="@id/EditText_Signup1_Email"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/maincolor"
+        android:textColor="#fff"
+        android:textStyle="bold"/>
+    
+    <EditText
+        android:id="@+id/EditText_Signup1_Phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_Email"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:inputType="number"
+        android:layout_marginTop="10dp"
+        android:hint="핸드폰번호"
+        android:layout_marginHorizontal="25dp"
+        />
+    <EditText
+        android:id="@+id/EditText_Signup1_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_Phone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:hint="비밀번호"
+        android:layout_marginHorizontal="25dp"
+        />
+    <EditText
+        android:id="@+id/EditText_Signup1_PwCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_Password"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:hint="비밀번호체크"
+        android:layout_marginHorizontal="25dp"
+        />
+    <ImageView
+        android:id="@+id/Imageview_Signup1_Checkimg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintRight_toRightOf="@id/EditText_Signup1_PwCheck"
+        app:layout_constraintTop_toTopOf="@id/EditText_Signup1_PwCheck"
+        app:layout_constraintBottom_toBottomOf="@id/EditText_Signup1_PwCheck"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"/>
+    <RadioGroup
+        android:id="@+id/RadioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_PwCheck"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+        <RadioButton
+            android:id="@+id/Radio_Signup1_Male"
+            android:text="남자"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_PwCheck"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Radio_Signup1_Female"
+           />
+
+        <RadioButton
+            android:id="@+id/Radio_Signup1_Female"
+            android:text="여자"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/EditText_Signup1_PwCheck"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Radio_Signup1_Male"
+           />
+
+    </RadioGroup>
+    <CheckBox
+        android:id="@+id/checkbox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/RadioGroup1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="이용약관 및 개인정보 보호정책에 동의합니다."
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/Button_Signup1_Signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/checkbox1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginHorizontal="80dp"
+        android:background="@drawable/coner_sub_full"
+        android:text="회원가입"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:enabled="false"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

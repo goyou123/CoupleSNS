@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingActivity">
+
+    <ImageView
+        android:id="@+id/iv_Setting_pinkline"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/maincolor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        />
+
+
+    <TextView
+        android:id="@+id/tv_mainlogo"
+        app:layout_constraintTop_toTopOf="@id/iv_Setting_pinkline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/iv_Setting_pinkline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환경설정"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <ImageView
+        android:id="@+id/Imageview_Setting_back"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/back"
+        android:clickable="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_Setting_pinkline"
+        app:layout_constraintBottom_toBottomOf="@id/iv_Setting_pinkline"
+        android:layout_marginLeft="15dp"
+        />
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/iv_Setting_pinkline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TextView_Setting_Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textSize="22sp"
+            android:padding="10dp"
+            android:clickable="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+        <TextView
+            android:id="@+id/TextView_Setting_Breack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="커플연결끊기"
+            android:textSize="22sp"
+            android:padding="10dp"
+            android:clickable="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+
+        <TextView
+            android:id="@+id/TextView_Setting_Editprofile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="내 정보 변경"
+            android:textSize="22sp"
+            android:padding="10dp"
+            android:clickable="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

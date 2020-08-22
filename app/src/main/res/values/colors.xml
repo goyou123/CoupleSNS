@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="subcolor">#FA8559</color>
+    <color name="maincolor">#ff4500</color>
+<!--    <color name="maincolor">#ff1a69</color>-->
+<!--    <color name="subcolor">#f5e4ee</color>-->
+    <color name="textcolor">#222222</color>
+    <color name="textcolor2">#e5e5e5</color>
+    <color name="deepRed">#9e192f</color>
+    <color name="spring">#fcbd6f</color>
+</resources>

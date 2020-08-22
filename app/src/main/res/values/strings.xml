@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CoupleSNS</string>
+    <string name="link"><a href="https://github.com/kor45cw/">Created by kor45cw</a></string>
+    <string name="error">Error</string>
+    <string name="failure">Failure</string>
+    <string name="empty">Empty</string>
+</resources>
