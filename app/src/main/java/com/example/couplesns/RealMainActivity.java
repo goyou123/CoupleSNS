@@ -45,6 +45,8 @@ public class RealMainActivity extends AppCompatActivity {
     String getEmail;
     String autoLoginKey;
 
+    Context context;
+
 
 
     @Override
@@ -95,6 +97,16 @@ public class RealMainActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+
+        //글쓰기 이미지 클릭 - 다이얼로그
+        Imageview_Main_WriteStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Write_Dialog writeDialog = new Write_Dialog(RealMainActivity.this);
+                writeDialog.callFunction();
+            }
+        });
+
 
         //음성지원
         Imageview_Main_Sound.setOnClickListener(new View.OnClickListener() {
@@ -223,19 +235,18 @@ public class RealMainActivity extends AppCompatActivity {
     public void getprofile(){
         /*나와 상대방 이미지 불러오기*/
         /*applicationClass에서 커플키값, 이메일값 쉐어드로 불러오기*/
-//        String coupleKey = applicationClass.sharedcouplekey; //커플키값
-//        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: sharedcouplekey ::"+coupleKey);
-//        String myEmail = applicationClass.autoLoginKey; // 이메일값
+        applicationClass.getShared_Email();
+        applicationClass.getShared_Couplekey();
+        String myEmail = applicationClass.autoLoginKey;
+        String coupleKey = applicationClass.sharedcouplekey;
+//
+//        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
+//        String myEmail = sharedPreferences1.getString("auto_login","no_autologin_key");
 //        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: autoLoginKey::"+myEmail);
-
-
-        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
-        String myEmail = sharedPreferences1.getString("auto_login","no_autologin_key");
-        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: autoLoginKey::"+myEmail);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
-        String coupleKey = sharedPreferences.getString(myEmail,"no_key_login");
-        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: coupleKey::"+coupleKey);
+//
+//        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
+//        String coupleKey = sharedPreferences.getString(myEmail,"no_key_login");
+//        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: coupleKey::"+coupleKey);
 
         applicationClass.retroClient.getprofiles(myEmail, coupleKey, new RetroCallback() {
             @Override
@@ -252,13 +263,13 @@ public class RealMainActivity extends AppCompatActivity {
                 Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
                 Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
                 if (myProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://192.168.30.130/img/"+myProfile).into(Imageview_Main_Myprofile); //글라이드 오류
+                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+myProfile).into(Imageview_Main_Myprofile); //글라이드 오류
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Myprofile);
                 }
 
                 if (otherProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://192.168.30.130/img/"+otherProfile).into(Imageview_Main_Anotherprofile);
+                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+otherProfile).into(Imageview_Main_Anotherprofile);
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Anotherprofile);
                 }

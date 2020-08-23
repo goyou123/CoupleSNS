@@ -29,7 +29,7 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        defaultProfile = "http://192.168.30.130/img/default_profile.png";
+        defaultProfile = "http://3.34.137.189/img/default_profile.png";
         Gson gson = new GsonBuilder()
         .setLenient()
         .create();
@@ -49,7 +49,26 @@ public class ApplicationClass extends Application {
         //이메일값으로 그 이메일에 해당하는 커플키 가져오기 - shared저장 signup2
         SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
         sharedcouplekey = sharedPreferences.getString(autoLoginKey,"no_key_login");
+    } //OnCreate
+
+    //로그인한 사람 이메일 가져오는 메소드
+    public String getShared_Email(){
+        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
+        autoLoginKey = sharedPreferences1.getString("auto_login","no_autologin_key");
+        return autoLoginKey;
     }
+
+    //로그인한 사람의 커플키를 가져오는 메소드
+    public String getShared_Couplekey(){
+        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
+        sharedcouplekey = sharedPreferences.getString(autoLoginKey,"no_key_login");
+        return sharedcouplekey;
+    }
+
+
+
+
+
 
     public class NullOnEmptyConverterFactory extends Converter.Factory {
 
@@ -64,5 +83,8 @@ public class ApplicationClass extends Application {
                 }
             };
         }
-    }
-}
+    }//NULL 어쩌고
+
+
+
+}//END

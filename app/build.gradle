@@ -59,4 +59,10 @@ dependencies {
 
     //이미지뷰 동그랗게 만들어주는 라이브러리
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //리사이클러뷰
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    //리사이클러뷰 속 카드뷰
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

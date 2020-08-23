@@ -236,13 +236,14 @@ public class CoupleprofileActivity extends AppCompatActivity {
                 Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
                 Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
                 if (myProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://192.168.30.130/img/"+myProfile).into(Imageview_Coupleprofile_Myprofile); //글라이드 오류
+                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+myProfile).into(Imageview_Coupleprofile_Myprofile); //글라이드 오류
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Coupleprofile_Myprofile);
                 }
 
                 if (otherProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://192.168.30.130/img/"+otherProfile).into(Imageview_Coupleprofile_Anotherprofile);
+                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+otherProfile).into(Imageview_Coupleprofile_Anotherprofile);
+//                    Glide.with(getApplicationContext()).load("http://192.168.30.130/img/"+otherProfile).into(Imageview_Coupleprofile_Anotherprofile);
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Coupleprofile_Anotherprofile);
                 }
@@ -325,6 +326,7 @@ public class CoupleprofileActivity extends AppCompatActivity {
                 String serverResult = data.getServerResult();
                 String imgresult = data.getCouplekey();
                 Log.d(TAG, "onSuccess: 레트로핏 이미지 "+code+"/"+imgresult);
+                Log.d(TAG, "onSuccess: 사진 결과"+serverResult);
 //                Toast.makeText(applicationClass, "onSuccess: "+code+"/"+imgresult, Toast.LENGTH_LONG).show();
                 Toast.makeText(applicationClass, "프로필이 변경되었습니다. ", Toast.LENGTH_LONG).show();
             }

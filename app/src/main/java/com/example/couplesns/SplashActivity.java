@@ -14,8 +14,9 @@ import com.example.couplesns.RetrofitJava.RetroCallback;
 import com.example.couplesns.RetrofitJava.RetroClient;
 
 public class SplashActivity extends AppCompatActivity {
-   String autoLoginKey;
+//   String autoLoginKey;
    RetroClient retroClient;
+   ApplicationClass applicationClass;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -23,7 +24,8 @@ public class SplashActivity extends AppCompatActivity {
 
         //레트로핏 사용을 위해 레트로핏 인스턴스 생성
         retroClient = RetroClient.getInstance(this).createBaseApi();
-
+        //applicationClass
+        applicationClass = (ApplicationClass) getApplicationContext();
 
     }
 
@@ -43,13 +45,16 @@ public class SplashActivity extends AppCompatActivity {
 //                }
                 //자동로그인
                 //로그인때 저장한 쉐어드에 내 이메일 키가 있으면 ("auto_login",입력이메일) 바로 메인으로 감
-                SharedPreferences sharedPreferences = getSharedPreferences("autologin",MODE_PRIVATE);
-                autoLoginKey = sharedPreferences.getString("auto_login","no_autologin_key"); //이메일
-                if(autoLoginKey.contentEquals("no_autologin_key")) {
+                applicationClass.getShared_Email();
+
+//                SharedPreferences sharedPreferences = getSharedPreferences("autologin",MODE_PRIVATE);
+//               autoLoginKey = sharedPreferences.getString("auto_login","no_autologin_key"); //이메일
+                Log.d("애플리케이션에서 가져온ㄴ", "applicationClass.autoLoginKey: "+applicationClass.autoLoginKey);
+                if(applicationClass.autoLoginKey.contentEquals("no_autologin_key")) {
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                 }else{
-                    retroClient.getUserData_main(autoLoginKey, new RetroCallback() {
+                    retroClient.getUserData_main(applicationClass.autoLoginKey, new RetroCallback() {
                         @Override
                         public void onError(Throwable t) {
 
