@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="subcolor">#FA8559</color>
-    <color name="maincolor">#ff4500</color>
-<!--    <color name="maincolor">#ff1a69</color>-->
-<!--    <color name="subcolor">#f5e4ee</color>-->
+<!--    <color name="subcolor">#FA8559</color>-->
+<!--    <color name="maincolor">#ff4500</color>-->
+    <color name="maincolor">#AB62F4</color>
+<!--    <color name="maincolor">#ccaaee</color>-->
+    <color name="subcolor">#9191FF</color>
+<!--    <color name="subcolor">#ccccff</color>-->
     <color name="textcolor">#222222</color>
     <color name="textcolor2">#e5e5e5</color>
     <color name="deepRed">#9e192f</color>

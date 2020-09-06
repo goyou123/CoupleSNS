@@ -2,6 +2,7 @@ package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
+import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
 import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RequestBody.RequestPut;
@@ -15,6 +16,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -241,14 +243,14 @@ public class RetroClient {
         apiService.plususer(parameters).enqueue(new Callback<Void>() { //인터페이스로부터 함수 호출
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d("테스트", "onResponse: 실행 ");
+                Log.d("새로운서버 회원가입", "onResponse: 실행 ");
                 if(response.isSuccessful()){
                     //response가 성공한 상태 결과 코드가 200범위일때 참값을 반환 - (정상통신 = 200 ~300 / 에러 = 500)
                     callback.onSuccess(response.code(),response.body());
-                    Log.d("테스트", "onResponse:  is Success "+response.code());
+                    Log.d("새로운서버 회원가입", "onResponse:  is Success "+response.code());
                 }else {
                     //서버와 통신에 성공하였지만, 서버 내부 동작 중에서 잘못된 점이 있을때
-                    Log.d("테스트", "onResponse:  is Fail ");
+                    Log.d("새로운서버 회원가입", "onResponse:  is Fail ");
                     callback.onFailure(response.code());
                 }
             }
@@ -256,7 +258,7 @@ public class RetroClient {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 callback.onError(t);
-                Log.d("테스트", "onFailure: "+t.toString());
+                Log.d("새로운서버 회원가입", "onFailure: "+t.toString());
                 // Request가 실패한 상태 (통신자체, 서버의 구현 이외의 에러 발생)
                 // 통신불가, 서버와 연결 실패 등
             }
@@ -445,6 +447,7 @@ public class RetroClient {
 
     }
 
+    //사귄날 저장
     public void addcoupledate(String dday ,String couplekey, final RetroCallback callback){
         apiService.addcoupledate(dday,couplekey).enqueue(new Callback<Result_login>() {
             @Override
@@ -495,8 +498,8 @@ public class RetroClient {
 
 
     /*수요일 이미지 첫시도-  -https://philip1994.tistory.com/15 */
-    public void uploadprofile(MultipartBody.Part File, RequestBody email, final RetroCallback callback){
-        apiService.uploadprofile(File,email).enqueue(new Callback<Result_login>() {
+    public void uploadprofile(MultipartBody.Part File, RequestBody email, RequestBody couplekey, final RetroCallback callback){
+        apiService.uploadprofile(File,email,couplekey).enqueue(new Callback<Result_login>() {
             @Override
             public void onResponse(Call<Result_login> call, Response<Result_login> response) {
                 if (response.isSuccessful()){
@@ -529,7 +532,7 @@ public class RetroClient {
 
             @Override
             public void onFailure(Call<ThreeStringData> call, Throwable t) {
-                Log.d("레트로 디데이저장", "onFailure: "+t.toString());
+                Log.d("레트로 getprofiles", "onFailure: "+t.toString());
             }
         });
 
@@ -537,6 +540,112 @@ public class RetroClient {
     }
 
 
+
+    /*사진 여러장 저장하기 ->WitestoryActivity*/
+    public void storyupload(ArrayList<MultipartBody.Part> filelist,
+                            RequestBody writer,RequestBody couplekey, RequestBody myimg, RequestBody otherimg, RequestBody story, RequestBody date, RequestBody form, RequestBody count,
+                            final RetroCallback callback){
+        apiService.storyupload(filelist,writer,couplekey,myimg,otherimg,story,date,form,count).enqueue(new Callback<List<Result_login>>() {
+            @Override
+            public void onResponse(Call<List<Result_login>> call, Response<List<Result_login>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Result_login>> call, Throwable t) {
+                Log.d("레트로 storyupload", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+
+    /*유저데이터 다 불러오기 =>프로필수정액티비티*/
+    public void getuserprofiles(String email,final RetroCallback callback){
+        apiService.getuserprofiles(email).enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                Log.d("레트로 getuserprofiles", "onFailure = 통신실패: "+t.toString());
+            }
+        });{
+
+        }
+    }
+
+
+    /*변경할 유저 데이터 저장 => 프로필수정 액티비티*/
+    public void editprofile(HashMap edituserdata,final RetroCallback callback){
+        apiService.editprofile(edituserdata).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.d("레트로 editprofile", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+    /*커플 네임 가져오기 (은찬 ♥ 민선) 같은거*/
+    public void getcouplename(String couplekey,final RetroCallback callback){
+        apiService.getcouplename(couplekey).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로 getcouplename", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+    /*메인화면 리사이클러뷰 1 - 전체 보기 */
+    public void mainStory_All(String form,final RetroCallback callback){
+        apiService.mainStory_All(form).enqueue(new Callback<List<StoryData>>() {
+            @Override
+            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+
+            }
+        });
+    }
 
 
 

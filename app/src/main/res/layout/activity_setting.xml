@@ -77,10 +77,10 @@
             android:background="#000"/>
 
         <TextView
-            android:id="@+id/TextView_Setting_Editprofile"
+            android:id="@+id/TextView_Setting_EditDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="내 정보 변경"
+            android:text="사귄 날 설정하기"
             android:textSize="22sp"
             android:padding="10dp"
             android:clickable="true"/>

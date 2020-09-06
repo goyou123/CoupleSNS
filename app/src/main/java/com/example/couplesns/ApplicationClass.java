@@ -20,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApplicationClass extends Application {
     /*사용을 위해서 메니페스트 application name:.Application.class 등록*/
+    static String serverImageRoot;
     String defaultProfile ;
     Retrofit retrofit;
     RetroBaseApiService apiService;
@@ -29,7 +30,8 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        defaultProfile = "http://3.34.137.189/img/default_profile.png";
+        defaultProfile = "http://13.125.182.117/img/default_profile.png";
+        serverImageRoot ="http://13.125.182.117/img/";
         Gson gson = new GsonBuilder()
         .setLenient()
         .create();

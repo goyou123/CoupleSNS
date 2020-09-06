@@ -202,6 +202,7 @@ public class Signup1Activity extends AppCompatActivity {
             //성공 콜백함수가 실행되면
             @Override
             public void onSuccess(int code, Object receivedData) {
+                Log.d("새로운서버", "onSuccess: ");
                 //여기는 데이터를 받는 곳   --> JSON 데이터를 읽어올 수 있다.
                 //데이터를 받아와 Edittext에 붙혀본다
                 //받은 데이터 없으므로 당연히 null값

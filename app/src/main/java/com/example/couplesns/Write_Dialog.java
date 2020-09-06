@@ -30,7 +30,7 @@ public class Write_Dialog {
         line1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,RealMainActivity.class);
+                Intent intent = new Intent(context,WriteStoryActivitiy.class);
                 context.startActivity(intent);
             }
         });

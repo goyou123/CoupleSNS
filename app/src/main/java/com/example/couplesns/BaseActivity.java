@@ -12,7 +12,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final int SHORT_TOAST = 0;
     public static final int LONG_TOAST = 1;
 
-    private static final String TAG = "DeveloperLog";
+    private static final String TAG = "로그";
 
 
     //로그 : 액티비티명 + 함수명 + 원하는 데이터를 한번에 보기위한 로그

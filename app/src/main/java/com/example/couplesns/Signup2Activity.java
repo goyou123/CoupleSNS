@@ -135,6 +135,8 @@ public class Signup2Activity extends AppCompatActivity {
                 String connectResult = data.getServerResult();
                 Log.d(TAG, "onSuccess: 서버에서 가져온 커플키 == "+connectResult);
 
+                String couplenameResult = data.getCouplekey();
+                Log.d(TAG, "onSuccess: 서버에서 가져온 커플네임== "+couplenameResult);
 //                //연결버튼 눌렀을때 shared에 저장된 이메일을 새로 초기화해준다. (로그인에서 온것만 저장되잖아)
 //                SharedPreferences sharedPreferences2 = getSharedPreferences("autologin",MODE_PRIVATE);
 //                SharedPreferences.Editor editor2 = sharedPreferences2.edit();
@@ -155,12 +157,15 @@ public class Signup2Activity extends AppCompatActivity {
 
                 Log.d(TAG, "randomkey 랜덤키: "+randomkey);
                 Log.d(TAG, "서버에서 가져온 커플키: "+connectResult);
+
                 if(connectResult.equals(randomkey)){
-//                    Toast.makeText(Signup2Activity.this, "커플 연결 완료!"+connectResult, Toast.LENGTH_SHORT).show();
+//
                     Toast.makeText(Signup2Activity.this, "커플 연결 완료!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),RealMainActivity.class);
                     startActivity(intent);
+
                 }else{
+
                     Toast.makeText(Signup2Activity.this, "커플 연결 실패!"+connectResult, Toast.LENGTH_SHORT).show();
                     return;
                 }

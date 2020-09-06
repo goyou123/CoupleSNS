@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainxmlPractice">
+    tools:context=".RealMainActivity">
     <ImageView
         android:id="@+id/Imageview_Main_Background"
         android:layout_width="match_parent"
@@ -175,18 +175,18 @@
         <LinearLayout
             android:id="@+id/View1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="탭메뉴테스트"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RCV_Main_View1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_WriteStory_pinkline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:background="@color/subcolor"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="모든 게시글 모아보기 "/>
         </LinearLayout>
 
         <!--    <TextView-->

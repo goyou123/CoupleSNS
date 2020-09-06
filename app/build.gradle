@@ -65,4 +65,7 @@ dependencies {
 
     //리사이클러뷰 속 카드뷰
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    //리사이클러뷰 속 뷰페이저
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }

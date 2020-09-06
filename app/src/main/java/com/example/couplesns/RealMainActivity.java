@@ -1,6 +1,8 @@
 package com.example.couplesns;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -18,13 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.couplesns.Adapter.StoryAdapter;
 import com.example.couplesns.DataClass.Result_login;
+import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
 import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RetrofitJava.RetroCallback;
 import com.example.couplesns.RetrofitJava.RetroClient;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -45,8 +50,12 @@ public class RealMainActivity extends AppCompatActivity {
     String getEmail;
     String autoLoginKey;
 
-    Context context;
 
+    //전체보기 리사이클러뷰 변수
+    ArrayList<StoryData> storyDataArrayList;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    StoryAdapter storyAdapter;
 
 
     @Override
@@ -54,9 +63,10 @@ public class RealMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_main);
 
-
         //applicationClass
         applicationClass = (ApplicationClass) getApplicationContext();
+
+
         //xml연결
         Imageview_Main_Sound = (ImageView) findViewById(R.id.Imageview_Main_Sound); // 음성지원아이콘
         Imageview_Main_Setting = (ImageView) findViewById(R.id.Imageview_Main_Setting); // 세팅아이콘
@@ -70,10 +80,6 @@ public class RealMainActivity extends AppCompatActivity {
         Button_Main_Chatting = (Button) findViewById(R.id.Button_Main_Chatting); // 채팅 버튼
         Button_Main_OurProfile = (Button) findViewById(R.id.Button_Main_OurProfile); //내 피드 버튼
 //        Edittext_Main_Search = (EditText) findViewById(R.id.Edittext_Main_Search); // 검색 입력칸
-
-        /*유저정보가져와서 메인화면에 세팅하기*/
-        // 내이름, 상대이름 가져오기
-        getuserinfo();
 
 
         /*탭 레이아웃 관련설정*/
@@ -97,6 +103,16 @@ public class RealMainActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+
+
+
+
+
+
+
+
+
+
 
         //글쓰기 이미지 클릭 - 다이얼로그
         Imageview_Main_WriteStory.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +168,10 @@ public class RealMainActivity extends AppCompatActivity {
         super.onResume();
         getcoupledate(); //사귄 날 가져오기
         getprofile(); //프로필 사진들 가져오기
+        getuserinfo(); // 이름 가져오기
+        allStory(); // 메인 리사이클러뷰 1 가져오기 - 전체보기
+
+
     } //onResume
 
 
@@ -263,13 +283,13 @@ public class RealMainActivity extends AppCompatActivity {
                 Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
                 Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
                 if (myProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+myProfile).into(Imageview_Main_Myprofile); //글라이드 오류
+                    Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+myProfile).into(Imageview_Main_Myprofile); //글라이드 오류
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Myprofile);
                 }
 
                 if (otherProfile!=null){
-                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+otherProfile).into(Imageview_Main_Anotherprofile);
+                    Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+otherProfile).into(Imageview_Main_Anotherprofile);
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Anotherprofile);
                 }
@@ -314,7 +334,12 @@ public class RealMainActivity extends AppCompatActivity {
                 //oncreate에서 사귄날 메인에 보여주기
                 Log.d(TAG, "couplekeyResult응?: "+couplekeyResult);
                 if(couplekeyResult==null){
-                    Textview_Main_Date.setText("우리의 피드에서 사귄날을 등록해주세요");
+                    Textview_Main_Date.setText("설정에서 사귄날을 등록해주세요!");
+//                    String no_date = Textview_Main_Date.getText().toString();
+//                    if(no_date.equals("우리 사귄날을 등록해주세요!")){
+//                        Intent intent = new Intent(getApplicationContext(),SettingActivity.class);
+//                        startActivity(intent);
+//                    }
                 }else {
                     Textview_Main_Date.setText(couplekeyResult);
                 }
@@ -328,5 +353,60 @@ public class RealMainActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+    /*메인 리사이클러뷰1 - 전체보기*/
+    public void allStory(){
+
+        /*View1 - 게시글 전체보기 탭 리사이클러뷰*/
+//        recyclerView = findViewById(R.id.RCV_Main_View1); // xml , 리사이클러뷰 연결
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+        storyDataArrayList = new ArrayList<>();
+
+//        storyAdapter = new StoryAdapter(storyDataArrayList,this ); // 스토리어댑터
+//        recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
+
+        /*서버에서 데이터 리스트 받아와서 보여주기*/
+        applicationClass.retroClient.mainStory_All("normal", new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
+                List<StoryData> storyData = (List<StoryData>)receivedData;
+//                StoryData storyData = (StoryData)receivedData;
+//                storyDataArrayList = (List<StoryData>)receivedData;
+                Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
+                for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+                    storyDataArrayList.add(storyData.get(i));
+                    Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
+                }
+//                storyDataArrayList.add(storyData);
+                recyclerView = findViewById(R.id.RCV_Main_View1); // xml , 리사이클러뷰 연결
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(RealMainActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+
+
+                storyAdapter = new StoryAdapter(storyDataArrayList,RealMainActivity.this ); // 스토리어댑터
+                storyAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
+                Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+
+    }//allStory()
 
 }//END

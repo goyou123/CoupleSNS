@@ -2,13 +2,16 @@ package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
+import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
 import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RequestBody.RequestPut;
 import com.example.couplesns.ResponseBody.ResponseGet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -25,6 +28,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 //  출처: https://kor45cw.tistory.com/5 [Developer's]
@@ -35,9 +39,10 @@ public interface RetroBaseApiService {
 
 
     //통신할 url 주소 (https:// 필수, )
-    final String Base_URL = "http://3.34.137.189/";
+    final String Base_URL = "http://13.125.182.117/"; //AWS 두번쨰 서버
+
+    // final String Base_URL = "http://3.34.137.189/"; //AWS 첫번쨰 서버
     // final String Base_URL = "http://192.168.30.130/"; // 이전 서버
-    // REST API 테스트 사이트
     // final String Base_URL = "https://jsonplaceholder.typicode.com";
 
 
@@ -50,9 +55,9 @@ public interface RetroBaseApiService {
 //    Call<ResponseGet> getFirst(@Query("userId") String id);
     //GET방식, ResponseGet 형식으로 된 JSON을 여러개 받는다.
     //https://jsonplaceholder.typicode.com/ posts?userID = test
-    // @Query Annotation은 GET방식에서만 사용가능합니다.
 
-    // Annotaion = 주석 (ex) @override)
+
+    // @Query Annotation은 GET방식에서만 사용가능합니다.
     @GET("example.php")
     Call<List<ResponseGet>> getSecond(@Query("userId") String id);
 
@@ -146,11 +151,57 @@ public interface RetroBaseApiService {
     //이미지 업로드 , 이미지 경로 , 이메일값 => 프로필 액티비티
     @Multipart
     @POST("upload.php")
-    Call<Result_login> uploadprofile (@Part MultipartBody.Part File ,@Part("email") RequestBody email);
+    Call<Result_login> uploadprofile (@Part MultipartBody.Part File ,@Part("email") RequestBody email,@Part("couplekey") RequestBody couplekey);
 
 
     // 나와 상대방 프로필 이미지 가져오기
     @GET("getprofiles.php")
     Call<ThreeStringData> getprofiles (@Query("email") String email, @Query("couplekey") String couplekey);
+
+
+    //내 유저 데이터 가져오기 - 프로필 수정 액티비티
+    @GET("getuserprofiles.php")
+    Call<UserData> getuserprofiles(@Query("email") String email);
+
+
+
+    //프로필 수정 정보 저장하기
+    @FormUrlEncoded
+    @POST("editprofile.php")
+    /*Call <response받는 데이터 클래스>*/
+    Call<Result_login> editprofile(@FieldMap HashMap<String, Object> edituserdata);
+
+
+
+    //스토리 내용 및 사진들 업로드
+    @Multipart
+    @POST("storyupload.php")
+    Call<List<Result_login>> storyupload (@Part ArrayList<MultipartBody.Part> filelist,
+//            @Part MultipartBody.Part File,
+                                    @Part("writer") RequestBody writer,
+                                      @Part("couplekey") RequestBody couplekey,
+                                      @Part("myimg") RequestBody myimg,
+                                      @Part("otherimg") RequestBody otherimg,
+                                    @Part("story") RequestBody story,
+                                    @Part("date") RequestBody date,
+                                    @Part("form") RequestBody form,
+                                    @Part("count") RequestBody count
+                                    );
+
+
+
+
+    //writeStory_couplename가져오기(은찬 ♥ 민선)
+    @GET("getcouplename.php")
+    Call<Result_login> getcouplename(@Query("couplekey") String couplekey);
+
+
+
+    //메인화면 전체보기 리사이클러뷰
+    @FormUrlEncoded
+    @POST("mainStory_All.php")
+    Call<List<StoryData>> mainStory_All(@Field("form") String form);
+
+
 
 }
