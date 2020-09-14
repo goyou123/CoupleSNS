@@ -93,6 +93,10 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
 
     }// StoryViewHolder
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
     @NonNull
     @Override
@@ -124,7 +128,9 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
             ArrayList<Viewpage_Img> imgArrayList = new ArrayList<>();
             for (int i=0; i<imgs.length; i++){
                 Log.d("이미지들분할", "onBindViewHolder: "+imgs[i]);
-                imgArrayList.add(new Viewpage_Img(imgs[i]));
+
+                //이미지와 이미지 총 길이와 이미지의 순번을 적용해서 보여준다.
+                imgArrayList.add(new Viewpage_Img(imgs[i],imgs.length,i+1));
             }
 
             //뷰페이저에서 보여줄 이미지 리스트가 담긴 어댑터를 뷰페이저와 연결
