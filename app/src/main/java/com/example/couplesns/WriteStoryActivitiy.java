@@ -342,29 +342,6 @@ public class WriteStoryActivitiy extends AppCompatActivity {
     }
 
 
-//    public String getCoupleName(){
-//
-//        applicationClass.retroClient.getcouplename(couplekey, new RetroCallback() {
-//            @Override
-//            public void onError(Throwable t) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(int code, Object receivedData) {
-//                Result_login data = (Result_login)receivedData;
-//                final String coupleName1 = data.getServerResult();
-//                Log.d(TAG, "onSuccess: 커플네임은: "+coupleName1);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
-// return "!";
-//    }
 
 
 }//END

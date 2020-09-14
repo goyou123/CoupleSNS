@@ -36,7 +36,7 @@ public class CommentActiviy extends AppCompatActivity {
     ImageView Imageview_Comment_Back,Imageview_Comment_Coupleimg1,Imageview_Comment_Coupleimg2,Imageview_Comment_WriterProfile;
     TextView Textview_Comment_Storywriter,Textview_Comment_Storycontent,Textview_Comment_Storydate;
     EditText Edittext_Comment_Content;
-    Button Button_Comment_Addcomment;
+    Button Button_Comment_Addcomment,Button_Comment_Editcomment;
 
     final static String TAG = "댓글액티비티";
 
@@ -70,6 +70,7 @@ public class CommentActiviy extends AppCompatActivity {
         Textview_Comment_Storydate = (TextView)findViewById(R.id.Textview_Comment_Storydate); //게시글 날짜
         Edittext_Comment_Content = (EditText)findViewById(R.id.Edittext_Comment_Content); // 댓글 쓰는 입력
         Button_Comment_Addcomment = (Button)findViewById(R.id.Button_Comment_Addcomment); // 게시 버튼
+        Button_Comment_Editcomment = (Button)findViewById(R.id.Button_Comment_Editcomment); // 수정 버튼
 
 
         //리사이클러뷰 어댑터에서 넘어온 게시글 데이터

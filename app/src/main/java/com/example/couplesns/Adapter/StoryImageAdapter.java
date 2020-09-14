@@ -2,6 +2,7 @@ package com.example.couplesns.Adapter;
 
 import android.content.Context;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class StoryImageAdapter extends RecyclerView.Adapter<StoryImageAdapter.St
 
     @Override
     public void onBindViewHolder(@NonNull StoryImageViewHolder holder, int position) {
+        Log.d("가로 이미지들 스토리 어댑터", "onBindViewHolder: "+storyImageDataArrayList);
         Glide.with(holder.itemView).load(storyImageDataArrayList.get(position).getStoryimage()).fitCenter().into(holder.storyimage);
     }
 

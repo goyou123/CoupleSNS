@@ -565,6 +565,33 @@ public class RetroClient {
     }
 
 
+    /*게시글 수정 , 사진 여러장 -> EditStroyActivvitiy*/
+    /*사진 여러장 저장하기 ->WitestoryActivity*/
+    public void editstoryupload(ArrayList<MultipartBody.Part> filelist,
+                             RequestBody idx, RequestBody story, RequestBody date,
+                            final RetroCallback callback){
+        apiService.editstoryupload(filelist,idx,story,date).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로 storyupload", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+
+
 
     /*유저데이터 다 불러오기 =>프로필수정액티비티*/
     public void getuserprofiles(String email,final RetroCallback callback){
@@ -780,6 +807,46 @@ public class RetroClient {
     }
 
 
+
+    /*댓글 삭제하기*/
+    public void commentremove(int idx, int storyidx, final RetroCallback callback){
+        apiService.commentremove(idx,storyidx).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("레트로 commentremove / ", "onFailure: "+t.toString());
+            }
+        });
+
+    }
+
+
+    /*댓글 수정하기*/
+    public void commentedit(int idx, String memo, String date, final RetroCallback callback){
+        apiService.commentedit(idx,memo,date).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로commentedit / ", "onFailure: "+t.toString());
+            }
+        });
+    }
 
 
 

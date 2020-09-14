@@ -191,6 +191,18 @@ public interface RetroBaseApiService {
 
 
 
+    //스토리 내용 수정 및 사진들 업로드
+    @Multipart
+    @POST("edit_storyupload.php")
+    Call<Result_login> editstoryupload (@Part ArrayList<MultipartBody.Part> filelist,
+//            @Part MultipartBody.Part File,
+                                          @Part("idx") RequestBody idx,
+                                          @Part("story") RequestBody story,
+                                          @Part("date") RequestBody date
+    );
+
+
+
 
     //writeStory_couplename가져오기(은찬 ♥ 민선)
     @GET("getcouplename.php")
@@ -236,9 +248,21 @@ public interface RetroBaseApiService {
     @POST("storyAddheart.php")
     Call<ThreeStringData> story_addheart(@Field("storyidx") int storyidx, @Field("couplekey") String couplekey);
 
+
     //게시글 좋아요 취소 (-1)
     @FormUrlEncoded
     @POST("storyRemoveheart.php")
     Call<ThreeStringData> story_removeheart(@Field("storyidx") int storyidx, @Field("couplekey") String couplekey);
 
+
+    //댓글 삭제 - 댓글 액티비티
+    @FormUrlEncoded
+    @POST("commentRemove.php")
+    Call<Void> commentremove(@Field("idx") int idx, @Field("storyidx") int storyidx);
+
+
+    //댓글 수정 - 댓글 액티비티
+    @FormUrlEncoded
+    @POST("commentEdit.php")
+    Call<Result_login> commentedit(@Field("idx") int idx, @Field("memo") String memo,@Field("date") String date);
 }

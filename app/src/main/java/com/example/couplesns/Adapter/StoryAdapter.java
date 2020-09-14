@@ -366,14 +366,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
                 @Override
                 public void onClick(final View view) {
 
-                    //
-//                    applicationClass1 = (ApplicationClass) context.getApplicationContext();
 
                     //수정, 삭제 다이얼로그 호출
                     final List<String> ListItems = new ArrayList<>();
                     ListItems.add("수정");
                     ListItems.add("삭제");
-
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
