@@ -16,6 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".EditStoryActivity"></activity>
+        <activity android:name=".CommentActiviy" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".WriteStoryActivitiy" /> <!-- 외부저장소권한 -->
         <activity android:name=".CoupleprofileActivity" />

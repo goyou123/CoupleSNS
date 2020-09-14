@@ -14,4 +14,6 @@
     <color name="textcolor2">#e5e5e5</color>
     <color name="deepRed">#9e192f</color>
     <color name="spring">#fcbd6f</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

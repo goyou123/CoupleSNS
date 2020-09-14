@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WriteStoryActivitiy">
+    tools:context=".EditStoryActivity">
 
     <ImageView
         android:id="@+id/iv_WriteStory_pinkline"
@@ -54,7 +54,7 @@
         android:background="@drawable/coner_white"
         android:textColor="#fff"
         android:textStyle="bold"/>
-    
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCV_Writestroy_addimage"
         android:layout_width="match_parent"
@@ -85,4 +85,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/addimage1"
         android:clickable="true"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

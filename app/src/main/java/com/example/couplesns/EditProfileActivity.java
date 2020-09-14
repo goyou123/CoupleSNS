@@ -204,8 +204,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 ThreeStringData data = (ThreeStringData)receivedData;
                 String myProfile = data.getFirst();
                 String otherProfile = data.getSecond();
+
                 Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
                 Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
+
+
                 if (myProfile!=null){
                     Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+myProfile).into(Imageview_Editprofile_Img); //글라이드와 생명주기 고려
                 }else{
@@ -235,7 +238,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int code, Object receivedData) {
                 Log.d(TAG, "getmyprofiles onSuccess: " + code);
-                //서버에서 데이터 받아오기
+                //서버에서 내 프로필 정보 가져오기
                 UserData data = (UserData)receivedData;
                 String responseName = data.getName();
                 String responsePhone= data.getPhone();
@@ -271,12 +274,15 @@ public class EditProfileActivity extends AppCompatActivity {
         String editEmail =Edittext_EditProfile_Email.getText().toString();
         String editPhone =Edittext_EditProfile_Phone.getText().toString();
 //        String editSex =Edittext_EditProfile_Name.getText().toString();
+
         HashMap<String, Object> editdata = new HashMap<>();
         editdata.put("email",myEmail);//이메일은 고유값처럼 shared로 쓰기 때문에 변경X , php에서 구분용으로사용
         editdata.put("editName",editName);
         editdata.put("editPhone",editPhone);
         editdata.put("couplekey",coupleKey);
+
         Log.d(TAG, "editprofileok: 서버로 보내는 커플키값(프로필변경)"+coupleKey);
+
         applicationClass.retroClient.editprofile(editdata, new RetroCallback() {
             @Override
             public void onError(Throwable t) {

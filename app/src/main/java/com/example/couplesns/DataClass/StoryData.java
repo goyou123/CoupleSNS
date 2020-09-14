@@ -1,6 +1,11 @@
 package com.example.couplesns.DataClass;
 
 public class StoryData {
+    String who; //좋아요 테이블
+    int story_idx; //좋아요 테이블
+
+    //게시글 테이블
+    String idx;
     String writer;
     String couplekey;
     String myimg;
@@ -13,9 +18,13 @@ public class StoryData {
     int comments;
     int script;
     String lastcomment;
+    String writerOfLastcomment;
 
-    public StoryData(String writer, String couplekey, String myimg, String otherimg, String content, String date,
-                     String images, String form, int heart, int comments, int script, String lastcomment) {
+    public StoryData(String who, int story_idx, String idx, String writer, String couplekey, String myimg, String otherimg,
+                     String content, String date, String images, String form, int heart, int comments, int script, String lastcomment, String writerOfLastcomment) {
+        this.who = who;
+        this.story_idx = story_idx;
+        this.idx = idx;
         this.writer = writer;
         this.couplekey = couplekey;
         this.myimg = myimg;
@@ -28,6 +37,31 @@ public class StoryData {
         this.comments = comments;
         this.script = script;
         this.lastcomment = lastcomment;
+        this.writerOfLastcomment = writerOfLastcomment;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
+    }
+
+    public int getStory_idx() {
+        return story_idx;
+    }
+
+    public void setStory_idx(int story_idx) {
+        this.story_idx = story_idx;
+    }
+
+    public String getIdx() {
+        return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
     }
 
     public String getWriter() {
@@ -124,5 +158,13 @@ public class StoryData {
 
     public void setLastcomment(String lastcomment) {
         this.lastcomment = lastcomment;
+    }
+
+    public String getWriterOfLastcomment() {
+        return writerOfLastcomment;
+    }
+
+    public void setWriterOfLastcomment(String writerOfLastcomment) {
+        this.writerOfLastcomment = writerOfLastcomment;
     }
 }

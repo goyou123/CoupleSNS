@@ -1,5 +1,6 @@
 package com.example.couplesns.RetrofitJava;
 
+import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -19,6 +20,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -629,10 +631,32 @@ public class RetroClient {
 
 
     /*메인화면 리사이클러뷰 1 - 전체 보기 */
-    public void mainStory_All(String form,final RetroCallback callback){
-        apiService.mainStory_All(form).enqueue(new Callback<List<StoryData>>() {
+    public void mainStory_All(String form, String couplekey,final RetroCallback callback){
+            apiService.mainStory_All(form,couplekey).enqueue(new Callback<List<StoryData>>() {
+                @Override
+                public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                    if (response.isSuccessful()){
+                        callback.onSuccess(response.code(),response.body());
+
+                    }else {
+                        callback.onFailure(response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<StoryData>> call, Throwable t) {
+
+                }
+            });
+    }
+
+
+
+    /*메인화면 리사이클러뷰 1 - idx값을 사용해 DB에서 삭제하기*/
+    public void mainStory_remove(int idx, final RetroCallback callback){
+        apiService.mainStory_remove(idx).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
                     callback.onSuccess(response.code(),response.body());
                 }else {
@@ -641,8 +665,116 @@ public class RetroClient {
             }
 
             @Override
-            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("레트로 mainStory_remove / ", "onFailure: "+t.toString());
+            }
+        });
 
+    }
+
+
+
+    /*댓글액티비티 - 로그인한 사람의 이름과 유저 정보 가져오기
+    * 애플리케이션클래스에서 가져와서 쭉 쓰면 어떨까? */
+    public void getnameprofile(String email,final RetroCallback callback){
+        apiService.getnameprofile(email).enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                Log.d("레트로 getNameProfile / ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+
+    /*댓글 저장하기*/
+    public void commentsupload(HashMap comments,final RetroCallback callback){
+        apiService.commentsupload(comments).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.d("레트로 commentsupload", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+    /*댓글 리사이클러뷰 불러오기 */
+    public void getcomment(int storyidx,final RetroCallback callback){
+        apiService.getcomment(storyidx).enqueue(new Callback<List<CommentData>>() {
+            @Override
+            public void onResponse(Call<List<CommentData>> call, Response<List<CommentData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+    /*게시글 좋아요 +1*/
+    public void story_addheart(int storyidx,String couplekey,final RetroCallback callback){
+        apiService.story_addheart(storyidx,couplekey).enqueue(new Callback<ThreeStringData>() {
+            @Override
+            public void onResponse(Call<ThreeStringData> call, Response<ThreeStringData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ThreeStringData> call, Throwable t) {
+                Log.d("story_addheart", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+    /*게시글 좋아요 취소-1*/
+    public void story_removeheart(int storyidx,String couplekey,final RetroCallback callback){
+        apiService.story_removeheart(storyidx,couplekey).enqueue(new Callback<ThreeStringData>() {
+            @Override
+            public void onResponse(Call<ThreeStringData> call, Response<ThreeStringData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ThreeStringData> call, Throwable t) {
+                Log.d("story_addheart", "onFailure: "+t.toString());
             }
         });
     }

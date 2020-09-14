@@ -121,41 +121,6 @@ public class CoupleprofileActivity extends AppCompatActivity {
         });
 
 
-//        /*나와 상대방 이미지 불러오기*/
-//        applicationClass.retroClient.getprofiles(myEmail, coupleKey, new RetroCallback() {
-//            @Override
-//            public void onError(Throwable t) {
-//                Log.d(TAG, "onError: "+t.toString());
-//            }
-//
-//            @Override
-//            public void onSuccess(int code, Object receivedData) {
-//                Log.d(TAG, "onSuccess: "+code+receivedData);
-//                ThreeStringData data = (ThreeStringData)receivedData;
-//                String myProfile = data.getFirst();
-//                String otherProfile = data.getSecond();
-//                Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
-//                Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
-//                if (myProfile!=null){
-//                    Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+myProfile).into(Imageview_Coupleprofile_Myprofile); //글라이드 오류
-//                }else{
-//                    Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Coupleprofile_Myprofile);
-//                }
-//
-//                if (otherProfile!=null){
-//                    Glide.with(getApplicationContext()).load("http://13.125.182.117/img/"+otherProfile).into(Imageview_Coupleprofile_Anotherprofile);
-////                    Glide.with(getApplicationContext()).load("http://3.34.137.189/img/"+otherProfile).into(Imageview_Coupleprofile_Anotherprofile);
-//                }else{
-//                    Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Coupleprofile_Anotherprofile);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//                Log.d(TAG, "onFailure: "+code);
-//            }
-//        });
-
 
     }//OnCreate
 

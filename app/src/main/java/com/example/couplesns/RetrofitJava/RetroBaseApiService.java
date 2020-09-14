@@ -1,5 +1,6 @@
 package com.example.couplesns.RetrofitJava;
 
+import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -200,8 +201,44 @@ public interface RetroBaseApiService {
     //메인화면 전체보기 리사이클러뷰
     @FormUrlEncoded
     @POST("mainStory_All.php")
-    Call<List<StoryData>> mainStory_All(@Field("form") String form);
+    Call<List<StoryData>> mainStory_All(@Field("form") String form,@Field("couplekey") String couplekey);
 
 
+
+    //글 삭제 - 메인리사이클러뷰1,전체보기
+    @FormUrlEncoded
+    @POST("mainStory_remove.php")
+    Call<Void> mainStory_remove(@Field("idx") int idx);
+
+
+    //이름과 프로필 가져오기 - 댓글액티비티
+    @GET("getNameProfile.php")
+    Call<UserData> getnameprofile(@Query("email") String email);
+
+
+
+    //댓글 저장하기 - 댓글 액티비티
+    @FormUrlEncoded
+    @POST("commentUpload.php")
+    /*Call <response받는 데이터 클래스>*/
+    Call<Result_login> commentsupload(@FieldMap HashMap<String, Object> comments);
+
+
+
+    //댓글 보기 리사이클러뷰
+    @FormUrlEncoded
+    @POST("getComment.php")
+    Call<List<CommentData>> getcomment(@Field("storyidx") int storyidx);
+
+
+    //게시글 좋아요 누르기 (+1)
+    @FormUrlEncoded
+    @POST("storyAddheart.php")
+    Call<ThreeStringData> story_addheart(@Field("storyidx") int storyidx, @Field("couplekey") String couplekey);
+
+    //게시글 좋아요 취소 (-1)
+    @FormUrlEncoded
+    @POST("storyRemoveheart.php")
+    Call<ThreeStringData> story_removeheart(@Field("storyidx") int storyidx, @Field("couplekey") String couplekey);
 
 }

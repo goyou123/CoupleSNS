@@ -37,7 +37,8 @@ public class Signup1Activity extends AppCompatActivity {
     private RetroClient retroClient;
     String name,email,phone,password,pwcheck,sex,randomKey;
 
-
+    ApplicationClass applicationClass;
+    String default_frofile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,9 @@ public class Signup1Activity extends AppCompatActivity {
 
         //레트로핏 사용을 위해 레트로핏 인스턴스 생성
         retroClient = RetroClient.getInstance(this).createBaseApi();
+
+        //applicationClass
+        applicationClass = (ApplicationClass) getApplicationContext();
 
         //레이아웃과 연결
         EditText_Signup1_Name = (EditText) findViewById(R.id.EditText_Signup1_Name);
@@ -161,17 +165,19 @@ public class Signup1Activity extends AppCompatActivity {
 //            return;
 //        }
 
-        //해쉬맵 형태로 저장하고 (해쉬맵은 인터페이스에서 선언되있음)
+        /*비밀번호 암호화해서 회원정보에 저장*/
+        String hashPassword = applicationClass.encryptSHA256(password);
+        Log.d("회원가입 액티비티", "hashPassword: 비번 암호화 :  "+hashPassword);
+
+       default_frofile = "default_profile.png";
+        //회원가입 데이터를 해쉬맵 형태로 서버로 전송
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("name", name);
         parameters.put("email", email);
         parameters.put("phone", phone);
-        parameters.put("password", password);
-//        parameters.put("pwcheck", pwcheck);
+        parameters.put("password", hashPassword);
         parameters.put("myCode",randomKey);
-//        parameters.put("other","null");
-//        parameters.put("profileimg","null");
-//        parameters.put("couplekey","null");
+        parameters.put("profileimg",default_frofile);
         parameters.put("sex",sex);
         Log.d("실행체크", "여기까지 실행"+parameters); // 실행됨
 

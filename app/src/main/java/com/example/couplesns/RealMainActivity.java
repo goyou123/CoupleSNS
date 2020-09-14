@@ -49,7 +49,7 @@ public class RealMainActivity extends AppCompatActivity {
     ApplicationClass applicationClass;
     String getEmail;
     String autoLoginKey;
-
+    String myEmail,coupleKey;
 
     //전체보기 리사이클러뷰 변수
     ArrayList<StoryData> storyDataArrayList;
@@ -80,6 +80,15 @@ public class RealMainActivity extends AppCompatActivity {
         Button_Main_Chatting = (Button) findViewById(R.id.Button_Main_Chatting); // 채팅 버튼
         Button_Main_OurProfile = (Button) findViewById(R.id.Button_Main_OurProfile); //내 피드 버튼
 //        Edittext_Main_Search = (EditText) findViewById(R.id.Edittext_Main_Search); // 검색 입력칸
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
+        myEmail = sharedPreferences1.getString("auto_login","no_autologin_key");
+        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: autoLoginKey::"+myEmail);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
+        coupleKey = sharedPreferences.getString(myEmail,"no_key_login");
+        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: coupleKey::"+coupleKey);
+
 
 
         /*탭 레이아웃 관련설정*/
@@ -255,8 +264,6 @@ public class RealMainActivity extends AppCompatActivity {
     public void getprofile(){
         /*나와 상대방 이미지 불러오기*/
         /*applicationClass에서 커플키값, 이메일값 쉐어드로 불러오기*/
-        applicationClass.getShared_Email();
-        applicationClass.getShared_Couplekey();
         String myEmail = applicationClass.autoLoginKey;
         String coupleKey = applicationClass.sharedcouplekey;
 //
@@ -276,20 +283,33 @@ public class RealMainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int code, Object receivedData) {
+                //나와 상대 프로필 이미지 불러오기
                 Log.d(TAG, "onSuccess: "+code+receivedData);
                 ThreeStringData data = (ThreeStringData)receivedData;
                 String myProfile = data.getFirst();
                 String otherProfile = data.getSecond();
+
                 Log.d(TAG, "onSuccess: 내 프로필 사진"+myProfile);
                 Log.d(TAG, "onSuccess: 상대 프로필 사진"+otherProfile);
+
+                //내 프로필 보여주기
                 if (myProfile!=null){
+                    Log.d(TAG, "onSuccess: 내프로필1 "+applicationClass.serverImageRoot+myProfile);
                     Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+myProfile).into(Imageview_Main_Myprofile); //글라이드 오류
+                }else if (myProfile.equals("default_profile.png")){
+                    Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Myprofile);
+                    Log.d(TAG, "onSuccess: 내프로필2 "+applicationClass.serverImageRoot+myProfile);
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Myprofile);
+                    Log.d(TAG, "onSuccess: 내프로필3 "+applicationClass.serverImageRoot+myProfile);
                 }
 
+
+                //상대 프로필 보여주기
                 if (otherProfile!=null){
                     Glide.with(getApplicationContext()).load(applicationClass.serverImageRoot+otherProfile).into(Imageview_Main_Anotherprofile);
+                }else if (otherProfile.equals("default_profile.png")){
+                    Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Myprofile);
                 }else{
                     Glide.with(getApplicationContext()).load(applicationClass.defaultProfile).into(Imageview_Main_Anotherprofile);
                 }
@@ -308,13 +328,13 @@ public class RealMainActivity extends AppCompatActivity {
         /*applicationClass에서 커플키값, 이메일값 쉐어드로 불러오기*/
 //        String coupleKey1 = applicationClass.sharedcouplekey; //커플키값
 //        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: sharedcouplekey ::"+coupleKey1);
-        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
-        String myEmail = sharedPreferences1.getString("auto_login","no_autologin_key");
-        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: autoLoginKey::"+myEmail);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
-        String coupleKey = sharedPreferences.getString(myEmail,"no_key_login");
-        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: coupleKey::"+coupleKey);
+//        SharedPreferences sharedPreferences1 = getSharedPreferences("autologin",MODE_PRIVATE);
+//        String myEmail = sharedPreferences1.getString("auto_login","no_autologin_key");
+//        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: autoLoginKey::"+myEmail);
+//
+//        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
+//        String coupleKey = sharedPreferences.getString(myEmail,"no_key_login");
+//        Log.d("애플리케이션클래스에서 가져온", "CoupleprofileActivity: coupleKey::"+coupleKey);
 
         /*사귄날 불러오기*/
         applicationClass.retroClient.getcoupledate(coupleKey, new RetroCallback() {
@@ -361,17 +381,11 @@ public class RealMainActivity extends AppCompatActivity {
     public void allStory(){
 
         /*View1 - 게시글 전체보기 탭 리사이클러뷰*/
-//        recyclerView = findViewById(R.id.RCV_Main_View1); // xml , 리사이클러뷰 연결
-//        recyclerView.setHasFixedSize(true);
-//        layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
         storyDataArrayList = new ArrayList<>();
-
-//        storyAdapter = new StoryAdapter(storyDataArrayList,this ); // 스토리어댑터
-//        recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
+        String couplekey = applicationClass.getShared_Couplekey();
 
         /*서버에서 데이터 리스트 받아와서 보여주기*/
-        applicationClass.retroClient.mainStory_All("normal", new RetroCallback() {
+        applicationClass.retroClient.mainStory_All("normal",couplekey,new RetroCallback() {
             @Override
             public void onError(Throwable t) {
 
@@ -381,21 +395,22 @@ public class RealMainActivity extends AppCompatActivity {
             public void onSuccess(int code, Object receivedData) {
                 Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
                 List<StoryData> storyData = (List<StoryData>)receivedData;
-//                StoryData storyData = (StoryData)receivedData;
-//                storyDataArrayList = (List<StoryData>)receivedData;
+
                 Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
                 for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+
+                    //댓글 리사이클러뷰에 보여줄 데이터 > 리스트에 추가
                     storyDataArrayList.add(storyData.get(i));
                     Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
                 }
-//                storyDataArrayList.add(storyData);
-                recyclerView = findViewById(R.id.RCV_Main_View1); // xml , 리사이클러뷰 연결
+
+                //리사이클러뷰 연결
+                recyclerView = findViewById(R.id.RCV_Main_View1);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(RealMainActivity.this);
                 recyclerView.setLayoutManager(layoutManager);
 
-
-                storyAdapter = new StoryAdapter(storyDataArrayList,RealMainActivity.this ); // 스토리어댑터
+                storyAdapter = new StoryAdapter(storyDataArrayList,RealMainActivity.this); // 스토리어댑터
                 storyAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
                 Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
