@@ -852,6 +852,9 @@ public class RetroClient {
 
 
 
+
+
+
     /*안쓰는거같음*/
     public void logincheck(String id, final RetroCallback callback) {
         apiService.logincheck(id).enqueue(new Callback<List<UserData>>() {
