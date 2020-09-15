@@ -209,12 +209,25 @@ public interface RetroBaseApiService {
     Call<Result_login> getcouplename(@Query("couplekey") String couplekey);
 
 
-
-    //메인화면 전체보기 리사이클러뷰
+    /*메인화면 탭메뉴 -- 탭에 따라 다른 리사이클러뷰*/
+    //메인화면 전체보기 리사이클러뷰1
     @FormUrlEncoded
     @POST("mainStory_All.php")
     Call<List<StoryData>> mainStory_All(@Field("form") String form,@Field("couplekey") String couplekey);
 
+
+    //메인화면 일반 글만 모아 보기 리사이클러뷰2
+    @FormUrlEncoded
+    @POST("mainStory_normal.php")
+    Call<List<StoryData>> mainStory_normal(@Field("form") String form,@Field("couplekey") String couplekey);
+
+    //메인화면 익명 글만 모아 보기 리사이클러뷰3
+    @FormUrlEncoded
+    @POST("mainStory_secret.php")
+    Call<List<StoryData>> mainStory_secret(@Field("form") String form,@Field("couplekey") String couplekey);
+
+
+    /*------------------------------------------*/
 
 
     //글 삭제 - 메인리사이클러뷰1,전체보기
@@ -265,4 +278,22 @@ public interface RetroBaseApiService {
     @FormUrlEncoded
     @POST("commentEdit.php")
     Call<Result_login> commentedit(@Field("idx") int idx, @Field("memo") String memo,@Field("date") String date);
+
+
+    //익명 게시글 업로드
+    @FormUrlEncoded
+    @POST("secretStoryUpload.php")
+        /*Call <response받는 데이터 클래스>*/
+    Call<Result_login> secretstoryupload( //로그인때 입력하는 한 유저의 값만 보내면 되므로 list X
+                                @FieldMap HashMap<String, Object> secretstory);
+
+
+
+    //익명댓글 저장하기 - 익명댓글 액티비티
+    @FormUrlEncoded
+    @POST("secretCommentUpload.php")
+    /*Call <response받는 데이터 클래스>*/
+    Call<Result_login> secretcommentsupload(@FieldMap HashMap<String, Object> secretcomments);
+
+
 }

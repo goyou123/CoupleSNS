@@ -205,10 +205,14 @@
             android:visibility="invisible"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="일반 게시글 모아보기 예정"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RCV_Main_View2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_WriteStory_pinkline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
 
 
         </LinearLayout>
@@ -228,11 +232,14 @@
             android:visibility="invisible"
 
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="익명글 모아보기 리사이클러뷰 예정"/>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RCV_Main_View3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_WriteStory_pinkline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
 
         </LinearLayout>
 
@@ -245,10 +252,14 @@
 
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="팔로우 글 리사이클러뷰 예정" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RCV_Main_View4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_WriteStory_pinkline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
 
         </LinearLayout>
 

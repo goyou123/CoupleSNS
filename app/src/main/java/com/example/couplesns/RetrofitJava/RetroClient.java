@@ -677,6 +677,48 @@ public class RetroClient {
             });
     }
 
+    /*메인화면 리사이클러뷰 2 - 일반글만 보기 */
+    public void mainStory_normal(String form, String couplekey,final RetroCallback callback){
+        apiService.mainStory_normal(form,couplekey).enqueue(new Callback<List<StoryData>>() {
+            @Override
+            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /*메인화면 리사이클러뷰 3 - 익명글만 보기 */
+    public void mainStory_secret(String form, String couplekey,final RetroCallback callback){
+        apiService.mainStory_secret(form,couplekey).enqueue(new Callback<List<StoryData>>() {
+            @Override
+            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
 
 
     /*메인화면 리사이클러뷰 1 - idx값을 사용해 DB에서 삭제하기*/
@@ -847,6 +889,51 @@ public class RetroClient {
             }
         });
     }
+
+
+
+    /*익명 게시글 스토리 업로드*/
+    public void secretstoryupload(HashMap<String,Object> secretstory,final RetroCallback callback){
+        apiService.secretstoryupload(secretstory).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로secretstoryupload / ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+    /*익명 게시글 댓글 업로드*/
+    public void secretcommentsupload(HashMap<String,Object> secretcomments,final RetroCallback callback){
+        apiService.secretcommentsupload(secretcomments).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("secretcommentsupload / ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
 
 
 

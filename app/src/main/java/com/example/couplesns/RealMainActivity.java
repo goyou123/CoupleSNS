@@ -52,10 +52,10 @@ public class RealMainActivity extends AppCompatActivity {
     String myEmail,coupleKey;
 
     //전체보기 리사이클러뷰 변수
-    ArrayList<StoryData> storyDataArrayList;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    StoryAdapter storyAdapter;
+    ArrayList<StoryData> storyDataArrayList,storyDataArrayList2,storyDataArrayList3,storyDataArrayList4;
+    RecyclerView recyclerView,recyclerView2,recyclerView3,recyclerView4;
+    RecyclerView.LayoutManager layoutManager,layoutManager2,layoutManager4,layoutManager3;
+    StoryAdapter storyAdapter,storyAdapter2,storyAdapter3,storyAdapter4;
 
 
     @Override
@@ -179,8 +179,8 @@ public class RealMainActivity extends AppCompatActivity {
         getprofile(); //프로필 사진들 가져오기
         getuserinfo(); // 이름 가져오기
         allStory(); // 메인 리사이클러뷰 1 가져오기 - 전체보기
-
-
+        normalStory(); // 메인 리사이클러뷰 2 가져오기 - 일반글보기
+        secretStory(); // 메인 리사이클러뷰 3 가져오기 - 익명글보기
     } //onResume
 
 
@@ -412,6 +412,8 @@ public class RealMainActivity extends AppCompatActivity {
 
                 storyAdapter = new StoryAdapter(storyDataArrayList,RealMainActivity.this); // 스토리어댑터
                 storyAdapter.notifyDataSetChanged();
+//                storyAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+
                 recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
                 Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
             }
@@ -423,5 +425,102 @@ public class RealMainActivity extends AppCompatActivity {
         });
 
     }//allStory()
+
+
+    public void normalStory(){
+        /*View2 - 일반글만 보기 탭 리사이클러뷰2*/
+        storyDataArrayList2 = new ArrayList<>();
+        String couplekey = applicationClass.getShared_Couplekey();
+
+        /*서버에서 데이터 리스트 받아와서 보여주기*/
+        applicationClass.retroClient.mainStory_normal("normal",couplekey,new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
+                List<StoryData> storyData = (List<StoryData>)receivedData;
+
+                Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
+                for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+
+                    //댓글 리사이클러뷰에 보여줄 데이터 > 리스트에 추가
+                    storyDataArrayList2.add(storyData.get(i));
+                    Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList2);
+                }
+
+                //리사이클러뷰 연결
+                recyclerView2 = findViewById(R.id.RCV_Main_View2);
+                recyclerView2.setHasFixedSize(true);
+                layoutManager2 = new LinearLayoutManager(RealMainActivity.this);
+                recyclerView2.setLayoutManager(layoutManager2);
+
+                storyAdapter2 = new StoryAdapter(storyDataArrayList2,RealMainActivity.this); // 스토리어댑터
+                storyAdapter2.notifyDataSetChanged();
+//                storyAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+
+                recyclerView2.setAdapter(storyAdapter2); // 리사이클러뷰에 어댑터 연결
+                Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList2);
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+
+    }//mainStory_normal()
+
+
+
+    public void secretStory(){
+        /*View2 - 일반글만 보기 탭 리사이클러뷰2*/
+        storyDataArrayList3 = new ArrayList<>();
+        String couplekey = applicationClass.getShared_Couplekey();
+
+        /*서버에서 데이터 리스트 받아와서 보여주기*/
+        applicationClass.retroClient.mainStory_secret("secret",couplekey,new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
+                List<StoryData> storyData = (List<StoryData>)receivedData;
+
+                Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
+                for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+
+                    //댓글 리사이클러뷰에 보여줄 데이터 > 리스트에 추가
+                    storyDataArrayList3.add(storyData.get(i));
+                    Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList3);
+                }
+
+                //리사이클러뷰 연결
+                recyclerView3 = findViewById(R.id.RCV_Main_View3);
+                recyclerView3.setHasFixedSize(true);
+                layoutManager3 = new LinearLayoutManager(RealMainActivity.this);
+                recyclerView3.setLayoutManager(layoutManager3);
+
+                storyAdapter3 = new StoryAdapter(storyDataArrayList3,RealMainActivity.this); // 스토리어댑터
+                storyAdapter3.notifyDataSetChanged();
+//                storyAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+
+                recyclerView3.setAdapter(storyAdapter3); // 리사이클러뷰에 어댑터 연결
+                Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList3);
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+
+    }//mainStory_normal()
 
 }//END
