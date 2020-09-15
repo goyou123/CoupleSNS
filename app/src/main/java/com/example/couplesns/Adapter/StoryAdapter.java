@@ -56,7 +56,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
     String getidx;
     String getCouplekey;
 
-   int i = 2;
+
     public StoryAdapter(ArrayList<StoryData> storyDataList,Context context) {
         this.StoryDataList = storyDataList;
         this.context = context;
