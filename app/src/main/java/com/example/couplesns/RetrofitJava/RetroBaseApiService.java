@@ -226,6 +226,12 @@ public interface RetroBaseApiService {
     @POST("mainStory_secret.php")
     Call<List<StoryData>> mainStory_secret(@Field("form") String form,@Field("couplekey") String couplekey);
 
+    
+    //상대 프로필 화면 상대 프로필이 쓴 게시글만 모아보기
+    @FormUrlEncoded
+    @POST("getProfileStory.php")
+    Call<List<StoryData>> getprofilestory(@Field("form") String form,@Field("couplekey") String couplekey);
+
 
     /*------------------------------------------*/
 

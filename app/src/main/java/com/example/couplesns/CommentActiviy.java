@@ -57,6 +57,7 @@ public class CommentActiviy extends AppCompatActivity {
         setContentView(R.layout.activity_comment_activiy);
 
         //applicationClass
+        applicationClass = (ApplicationClass) getApplicationContext();   //applicationClass
         applicationClass = (ApplicationClass) getApplicationContext();
         myEmail = applicationClass.getShared_Email();
 

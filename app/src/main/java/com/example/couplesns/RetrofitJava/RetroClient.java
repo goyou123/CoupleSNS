@@ -672,7 +672,7 @@ public class RetroClient {
 
                 @Override
                 public void onFailure(Call<List<StoryData>> call, Throwable t) {
-
+                    Log.d("레트로mainStory_All", "onFailure: "+ t.toString());
                 }
             });
     }
@@ -692,7 +692,7 @@ public class RetroClient {
 
             @Override
             public void onFailure(Call<List<StoryData>> call, Throwable t) {
-
+                Log.d("레트로mainStory_normal", "onFailure: "+ t.toString());
             }
         });
     }
@@ -712,16 +712,34 @@ public class RetroClient {
 
             @Override
             public void onFailure(Call<List<StoryData>> call, Throwable t) {
+                Log.d("레트로mainStory_secret", "onFailure: "+ t.toString());
+            }
+        });
+    }
 
+    /*상대 프로필 화면에서 상대 커플들이 쓴 게시글만 불러오기*/
+    public void getprofilestory(String form, String couplekey, final RetroCallback callback){
+        apiService.getprofilestory(form,couplekey).enqueue(new Callback<List<StoryData>>() {
+            @Override
+            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+                Log.d("레트로getprofilestory", "onFailure: "+ t.toString());
             }
         });
     }
 
 
 
-
-
-    /*메인화면 리사이클러뷰 1 - idx값을 사용해 DB에서 삭제하기*/
+    /*메인화면 리사이클러뷰 1 삭제 - idx값을 사용해 DB에서 삭제하기*/
     public void mainStory_remove(int idx, final RetroCallback callback){
         apiService.mainStory_remove(idx).enqueue(new Callback<Void>() {
             @Override

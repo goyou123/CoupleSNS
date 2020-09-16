@@ -521,6 +521,6 @@ public class RealMainActivity extends AppCompatActivity {
             }
         });
 
-    }//mainStory_normal()
+    }//mainStory_secret()
 
 }//END

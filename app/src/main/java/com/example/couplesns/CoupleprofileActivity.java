@@ -3,6 +3,8 @@ package com.example.couplesns;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -29,8 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.couplesns.Adapter.StoryAdapter;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
+import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
 import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RetrofitJava.RetroCallback;
@@ -39,8 +43,10 @@ import com.example.couplesns.RetrofitJava.RetroClient;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import okhttp3.MediaType;
@@ -59,6 +65,13 @@ public class CoupleprofileActivity extends AppCompatActivity {
 
     ApplicationClass applicationClass;
     String coupleKey,myEmail;
+
+    //리사이클러뷰
+    ArrayList<StoryData> storyDataArrayList;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    StoryAdapter storyAdapter;
+
 
 
 
@@ -126,9 +139,6 @@ public class CoupleprofileActivity extends AppCompatActivity {
 
 
 
-
-
-
     /*이메일값을 서버로 보내고 그걸 이용해 그 사람의 데이터 가져오기*/
     public void getuserinfo(){
         applicationClass.retroClient.getUserData_main(myEmail, new RetroCallback() {
@@ -171,6 +181,9 @@ public class CoupleprofileActivity extends AppCompatActivity {
 
         //나와 상대방 이름 불러오기
         getuserinfo();
+
+        //우리가 쓴 게시글 리사이클러뷰 불러오기
+        ourStory();
 
 
         /*applicationClass에서 커플키값, 이메일값 쉐어드로 불러오기*/
@@ -260,6 +273,56 @@ public class CoupleprofileActivity extends AppCompatActivity {
 
 
     } //onResume
+
+
+    /*우리커플이 쓴 게시물 리사이클러뷰 불러오기*/
+    public void ourStory(){
+
+        storyDataArrayList = new ArrayList<>();
+
+        /*서버에서 데이터 리스트 받아와서 보여주기*/
+        applicationClass.retroClient.getprofilestory("normal",coupleKey,new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
+                List<StoryData> storyData = (List<StoryData>)receivedData;
+
+                Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
+                for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+
+                    //댓글 리사이클러뷰에 보여줄 데이터 > 리스트에 추가
+                    storyDataArrayList.add(storyData.get(i));
+                    Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
+                }
+
+                //리사이클러뷰 연결
+                recyclerView = findViewById(R.id.RCV_MyProfile);
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(CoupleprofileActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+
+                storyAdapter = new StoryAdapter(storyDataArrayList,CoupleprofileActivity.this); // 스토리어댑터
+                storyAdapter.notifyDataSetChanged();
+//                storyAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+
+                recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
+                Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+
+
+
+    }//ourStory()
 
 
 }//END

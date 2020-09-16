@@ -217,7 +217,7 @@ public class WriteStoryActivitiy extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("STORY",MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("couplename",coupleName);
-                editor.commit();
+                editor.apply();
             }
 
             @Override
