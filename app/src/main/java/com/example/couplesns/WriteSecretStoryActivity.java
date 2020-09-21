@@ -70,6 +70,7 @@ public class WriteSecretStoryActivity extends AppCompatActivity {
 
         String secretContent = Edittext_SecretWritestory_Content.getText().toString();
         String couplekey = applicationClass.getShared_Couplekey();
+        String writerEmail = applicationClass.getShared_Email();
 
         //현재시간
         long mNow = System.currentTimeMillis();
@@ -81,11 +82,12 @@ public class WriteSecretStoryActivity extends AppCompatActivity {
         HashMap<String, Object> secretstory = new HashMap<>();
         secretstory.put("writer", "익명");
         secretstory.put("couplekey", couplekey);
+        secretstory.put("writeremail", writerEmail);
         secretstory.put("myimg", "default_profile.png");
         secretstory.put("content",secretContent);
         secretstory.put("date",getTime);
         secretstory.put("form","secret");
-
+        Log.d(TAG, "secretstoryupload: "+writerEmail);
         Log.d("실행체크", "여기까지 실행"+secretstory); // 실행됨
 
         applicationClass.retroClient.secretstoryupload(secretstory, new RetroCallback() {

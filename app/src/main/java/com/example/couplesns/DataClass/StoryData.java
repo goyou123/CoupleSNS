@@ -7,6 +7,7 @@ public class StoryData {
     //게시글 테이블
     String idx;
     String writer;
+    String writeremail;
     String couplekey;
     String myimg;
     String otherimg;
@@ -20,12 +21,13 @@ public class StoryData {
     String lastcomment;
     String writerOfLastcomment;
 
-    public StoryData(String who, int story_idx, String idx, String writer, String couplekey, String myimg, String otherimg,
+    public StoryData(String who, int story_idx, String idx, String writer, String writeremail, String couplekey, String myimg, String otherimg,
                      String content, String date, String images, String form, int heart, int comments, int script, String lastcomment, String writerOfLastcomment) {
         this.who = who;
         this.story_idx = story_idx;
         this.idx = idx;
         this.writer = writer;
+        this.writeremail = writeremail;
         this.couplekey = couplekey;
         this.myimg = myimg;
         this.otherimg = otherimg;
@@ -70,6 +72,14 @@ public class StoryData {
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    public String getWriteremail() {
+        return writeremail;
+    }
+
+    public void setWriteremail(String writeremail) {
+        this.writeremail = writeremail;
     }
 
     public String getCouplekey() {

@@ -284,9 +284,13 @@ public class WriteStoryActivitiy extends AppCompatActivity {
         Log.d(TAG, "onSuccess: 서버로 저장할 내 프로필 사진:::"+sharedMyimg);
         Log.d(TAG, "onSuccess: 서버로 저장할 상대 프로필 사진1:::"+sharedOtherimg);
 
+        //작성자 이메일 (후에 추가되었음 - 익명 게시글 수정 삭제를 위해)
+        String myemail = applicationClass.getShared_Email();
+        Log.d(TAG, "storyUpload:로그인, 작성자이메일 "+myemail);
 
         // 서버로 보낼 데이터들 - Requestbody형식으로 맞춰줌 => 레트로핏 인터페이스 매개변수와 형식 일치해야 서버로 전송 가능
         RequestBody requestWriter = RequestBody.create(MediaType.parse("text/plain"),sharedCouplename);
+        RequestBody requestWriteremail = RequestBody.create(MediaType.parse("text/plain"),myemail);
         RequestBody requestCouplekey = RequestBody.create(MediaType.parse("text/plain"),writer_couplekey);
         RequestBody requestMyimg = RequestBody.create(MediaType.parse("text/plain"),sharedMyimg);
         RequestBody requestOtherimg = RequestBody.create(MediaType.parse("text/plain"),sharedOtherimg);
@@ -295,7 +299,7 @@ public class WriteStoryActivitiy extends AppCompatActivity {
         RequestBody requestForm = RequestBody.create(MediaType.parse("text/plain"),FORM);
         RequestBody requestCount = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(count));
 
-
+        Log.d(TAG, "storyUpload: +작성자이메일 : "+ requestWriteremail);
         Log.d(TAG, "storyUpload: +작성커플키 : "+ writer_couplekey);
         Log.d(TAG, "storyUpload: +쓴내용 : "+ addStory);
         Log.d(TAG, "storyUpload: +현재시간 : "+getTime);
@@ -305,7 +309,7 @@ public class WriteStoryActivitiy extends AppCompatActivity {
 
 
         //서버로 사진들과 함께 저장할 데이터 저장
-        applicationClass.retroClient.storyupload(multiList, requestWriter,requestCouplekey,requestMyimg,requestOtherimg,requestStory,
+        applicationClass.retroClient.storyupload(multiList,requestWriter,requestWriteremail,requestCouplekey,requestMyimg,requestOtherimg,requestStory,
                 requestDate, requestForm, requestCount, new RetroCallback() {
                     @Override
                     public void onError(Throwable t) {

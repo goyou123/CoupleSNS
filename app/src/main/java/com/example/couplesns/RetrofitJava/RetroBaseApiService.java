@@ -179,7 +179,7 @@ public interface RetroBaseApiService {
     @POST("storyupload.php")
     Call<List<Result_login>> storyupload (@Part ArrayList<MultipartBody.Part> filelist,
 //            @Part MultipartBody.Part File,
-                                    @Part("writer") RequestBody writer,
+                                    @Part("writer") RequestBody writer, @Part("writeremail") RequestBody writeremail,
                                       @Part("couplekey") RequestBody couplekey,
                                       @Part("myimg") RequestBody myimg,
                                       @Part("otherimg") RequestBody otherimg,
@@ -226,7 +226,7 @@ public interface RetroBaseApiService {
     @POST("mainStory_secret.php")
     Call<List<StoryData>> mainStory_secret(@Field("form") String form,@Field("couplekey") String couplekey);
 
-    
+
     //상대 프로필 화면 상대 프로필이 쓴 게시글만 모아보기
     @FormUrlEncoded
     @POST("getProfileStory.php")
@@ -294,11 +294,16 @@ public interface RetroBaseApiService {
                                 @FieldMap HashMap<String, Object> secretstory);
 
 
+    //익명 게시글 수정하기
+    @FormUrlEncoded
+    @POST("edit_secretStoryUpload.php")
+    Call<Result_login> edit_secretstoryupload( //로그인때 입력하는 한 유저의 값만 보내면 되므로 list X
+                                          @FieldMap HashMap<String, Object> editsecretstory);
+
 
     //익명댓글 저장하기 - 익명댓글 액티비티
     @FormUrlEncoded
     @POST("secretCommentUpload.php")
-    /*Call <response받는 데이터 클래스>*/
     Call<Result_login> secretcommentsupload(@FieldMap HashMap<String, Object> secretcomments);
 
 

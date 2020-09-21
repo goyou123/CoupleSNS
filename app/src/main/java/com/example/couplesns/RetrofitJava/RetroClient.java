@@ -545,9 +545,9 @@ public class RetroClient {
 
     /*사진 여러장 저장하기 ->WitestoryActivity*/
     public void storyupload(ArrayList<MultipartBody.Part> filelist,
-                            RequestBody writer,RequestBody couplekey, RequestBody myimg, RequestBody otherimg, RequestBody story, RequestBody date, RequestBody form, RequestBody count,
+                            RequestBody writer,RequestBody writeremail,RequestBody couplekey, RequestBody myimg, RequestBody otherimg, RequestBody story, RequestBody date, RequestBody form, RequestBody count,
                             final RetroCallback callback){
-        apiService.storyupload(filelist,writer,couplekey,myimg,otherimg,story,date,form,count).enqueue(new Callback<List<Result_login>>() {
+        apiService.storyupload(filelist,writer,writeremail,couplekey,myimg,otherimg,story,date,form,count).enqueue(new Callback<List<Result_login>>() {
             @Override
             public void onResponse(Call<List<Result_login>> call, Response<List<Result_login>> response) {
                 if (response.isSuccessful()){
@@ -930,6 +930,25 @@ public class RetroClient {
     }
 
 
+    /*익명 게시글 수정하기*/
+    public void edit_secretstoryupload(HashMap<String,Object> editsecretstory,final RetroCallback callback){
+        apiService.edit_secretstoryupload(editsecretstory).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("edit_secretstoryupload", "onFailure: "+t.toString());
+            }
+        });
+    }
+
 
     /*익명 게시글 댓글 업로드*/
     public void secretcommentsupload(HashMap<String,Object> secretcomments,final RetroCallback callback){
@@ -949,6 +968,7 @@ public class RetroClient {
             }
         });
     }
+
 
 
 

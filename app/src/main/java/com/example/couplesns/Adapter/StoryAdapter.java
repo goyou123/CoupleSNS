@@ -28,6 +28,7 @@ import com.example.couplesns.CoupleprofileActivity;
 import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
 import com.example.couplesns.DataClass.Viewpage_Img;
+import com.example.couplesns.EditSecretStoryActivity;
 import com.example.couplesns.EditStoryActivity;
 import com.example.couplesns.Listener.OnStoryItemClickListener;
 import com.example.couplesns.MainActivity;
@@ -73,7 +74,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
 
 
         //익명
-        ImageView Secretdata_Profile,Secretdata_CommentImg;
+        ImageView Secretdata_Profile,Secretdata_CommentImg,Secretdata_Hambuger;
         TextView Secretdata_Content,Secretdata_Date,Secretdata_CommentCount;
         ConstraintLayout Const2;
 
@@ -103,6 +104,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
             Const2 = (ConstraintLayout)itemView.findViewById(R.id.Const2);
             Secretdata_Profile = (ImageView)itemView.findViewById(R.id.Secretdata_Profile); //기본프로필사진
             Secretdata_CommentImg = (ImageView)itemView.findViewById(R.id.Secretdata_CommentImg); //댓글 아이콘
+            Secretdata_Hambuger = (ImageView)itemView.findViewById(R.id.Secretdata_Hambuger); //햄버거 아이콘
             Secretdata_Content = (TextView)itemView.findViewById(R.id.Secretdata_Content); // 내용
             Secretdata_Date = (TextView)itemView.findViewById(R.id.Secretdata_Date); // 날짜
             Secretdata_CommentCount = (TextView)itemView.findViewById(R.id.Secretdata_CommentCount); //댓글수
@@ -152,9 +154,14 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
 
     @Override
     public void onBindViewHolder(@NonNull final StoryViewHolder holder, final int position) {
+//        applicationClass1 = (ApplicationClass) context.getApplicationContext();
+//        retroClient = applicationClass1.retroInAdapter();
+
+
         String formType =StoryDataList.get(position).getForm();
         if(formType.equals("secret")){
-
+            applicationClass1 = (ApplicationClass) context.getApplicationContext();
+            retroClient = applicationClass1.retroInAdapter();
             /*익명 게시글 일 경우*/
             holder.Secretdata_Content.setText(StoryDataList.get(position).getContent());
             holder.Secretdata_Date.setText(StoryDataList.get(position).getDate());
@@ -174,8 +181,103 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
                     intent.putExtra("secretContent",secretContent);
                     intent.putExtra("secretDate",secretDate);
                     context.startActivity(intent);
+
                 }
             });
+
+
+            //익명 게시글 햄버거 버튼 클릭시 수정, 삭제
+            String ddd = StoryDataList.get(position).getWriteremail();
+            String getWriteremail = StoryDataList.get(position).getWriteremail();
+            String loginEmail = applicationClass1.getShared_Email();
+            Log.d("ㅇㅇㅇㅇ", "onBindViewHolder서버: "+getWriteremail);
+            Log.d("ㅇㅇㅇㅇ", "onBindViewHolder쉐어드: "+loginEmail);
+            if(getWriteremail.equals(loginEmail)) {
+                holder.Secretdata_Hambuger.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+
+
+                        //수정, 삭제 다이얼로그 호출
+                        final List<String> ListItems = new ArrayList<>();
+                        ListItems.add("수정");
+                        ListItems.add("삭제");
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int pos) {
+                                String selectedText = items[pos].toString();
+
+                                //idx값을 가져오는건 최대한 실행시킬 코드 가까이서 해야 포지션값이 안꼬임
+                                String getidx3 = StoryDataList.get(position).getIdx();
+                                int idx =Integer.parseInt(getidx3);
+
+                                if (selectedText.equals("삭제")) {
+                                    Toast.makeText(context, selectedText, Toast.LENGTH_SHORT).show();
+                                    Log.d("바인드속", "onClick: "+StoryDataList);
+                                    StoryDataList.remove(position);
+                                    notifyDataSetChanged();
+
+
+                                    //TODO: 디비에서도 삭제
+//                                retroClient = applicationClass1.retroInAdapter();
+                                    retroClient.mainStory_remove(idx, new RetroCallback() {
+                                        @Override
+                                        public void onError(Throwable t) {
+                                            Log.d("어댑터-바인드 속", "onError: "+t.toString());
+                                        }
+
+                                        @Override
+                                        public void onSuccess(int code, Object receivedData) {
+                                            Log.d("어댑터-바인드 속", "onSuccess: "+code+receivedData);
+                                        }
+
+                                        @Override
+                                        public void onFailure(int code) {
+                                            Log.d("어댑터-바인드 속", "onFailure: "+code);
+                                        }
+                                    });
+
+
+
+                                } else if (selectedText.equals("수정")) {
+                                    //TODO: 수정 하는 액티비티로 이동하기
+                                    String getidx2 = StoryDataList.get(position).getIdx(); //게시글 인덱스
+//                                    getCouplekey = StoryDataList.get(position).getCouplekey(); //작성커플
+//                                    String getStoryImgs = StoryDataList.get(position).getImages(); // 이미지들
+                                    String getWriterEmail = StoryDataList.get(position).getWriteremail();
+                                    String getContent = StoryDataList.get(position).getContent();
+                                    //날짜는 새로 작성할때 ㅇㅋ
+
+                                    //수정 액티비티에서 보여줄 게시글 관련 데이터들을 전달한다.
+                                    Intent intent = new Intent(context, EditSecretStoryActivity.class);
+                                    intent.putExtra("getidx",getidx2); //댓글 위치를 위해
+//                                    intent.putExtra("getCouplekey",getCouplekey); //작성자의 커플키 필요있나?
+                                    intent.putExtra("getWriterEmail",getWriterEmail); //작성자의 이메일 - 본인만 수정하기 위해서
+                                    intent.putExtra("getContent",getContent);
+
+
+                                    Log.d("말풍선 클릭", "onClick: "+intent);
+                                    context.startActivity(intent);
+
+
+                                }
+                            }
+                        });
+                        builder.show();
+
+
+                    }
+                });
+            } else {
+                //내가 쓴 글 아닐때  이미지뷰 비우기
+//            holder.Storydata_Hambuger.setBackgroundColor(0);
+                holder.Secretdata_Hambuger.setVisibility(View.GONE);
+            }
+
+
 
 
         }else{
