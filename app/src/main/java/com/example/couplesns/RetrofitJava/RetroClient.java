@@ -1,6 +1,7 @@
 package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.CommentData;
+import com.example.couplesns.DataClass.FollowData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -971,6 +972,127 @@ public class RetroClient {
 
 
 
+    /*팔로우 추가하기 -> OtherCoupleProfileActivity*/
+    public void follow_add(HashMap<String,Object> addFollow,final RetroCallback callback){
+        apiService.follow_add(addFollow).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 follow_add/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*팔로우 취소하기, 팔로잉 해제 ->OtherCoupleProfileActivity, 팔로우 어댑터*/
+    public void follow_remove(HashMap<String,Object> removeFollow,final RetroCallback callback){
+        apiService.follow_remove(removeFollow).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 follow_remove/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+    /*팔로우 취소하기, 팔로워 삭제 ->팔로우 어댑터*/
+    public void follower_remove(HashMap<String,Object> removeFollow,final RetroCallback callback){
+        apiService.follower_remove(removeFollow).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 follower_remove/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+
+    /*팔로우 체크하기 : 팔로우/ 팔로우 취소 버튼 판별을 위해->OtherCoupleProfileActivity */
+    public void follow_check(HashMap<String,Object> checkFollow,final RetroCallback callback){
+        apiService.follow_check(checkFollow).enqueue(new Callback<ThreeStringData>() {
+            @Override
+            public void onResponse(Call<ThreeStringData> call, Response<ThreeStringData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ThreeStringData> call, Throwable t) {
+                Log.d("레트로핏 follow_check/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*팔로잉 리스트 리사이클러뷰 보이기 ->팔로우 액티비티*/
+    public void follow_getfollowingList(String couplekey, final RetroCallback callback){
+        apiService.follow_getfollowingList(couplekey).enqueue(new Callback<List<FollowData>>() {
+            @Override
+            public void onResponse(Call<List<FollowData>> call, Response<List<FollowData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FollowData>>call, Throwable t) {
+                Log.d("follow_getfollowingList", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+    /*팔로워 리스트 리사이클러뷰 보이기 ->팔로우 액티비티*/
+    public void follow_getfollowerList(String couplekey, final RetroCallback callback){
+        apiService.follow_getfollowerList(couplekey).enqueue(new Callback<List<FollowData>>() {
+            @Override
+            public void onResponse(Call<List<FollowData>> call, Response<List<FollowData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FollowData>>call, Throwable t) {
+                Log.d("follow_getfollowerList", "onFailure: "+t.toString());
+            }
+        });
+    }
 
 
 

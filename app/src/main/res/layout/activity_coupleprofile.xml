@@ -130,9 +130,9 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Coupleprofile_Background"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@color/maincolor"
+
         android:orientation="horizontal"
-        android:weightSum="4"
+        android:weightSum="3"
         >
         <Button
             android:id="@+id/Button_Coupleprofile_Follow"
@@ -142,16 +142,17 @@
             android:background="@color/maincolor"
             android:text="팔로우"
             android:textColor="#fff"
-            android:textStyle="bold"/>
-        <Button
-            android:id="@+id/Button_Coupleprofile_Star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/maincolor"
-            android:text="스크랩"
-            android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+           />
+<!--        <Button-->
+<!--            android:id="@+id/Button_Coupleprofile_Star"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@color/maincolor"-->
+<!--            android:text="스크랩"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textStyle="bold"/>-->
         <Button
             android:id="@+id/Button_Coupleprofile_Gallery"
             android:layout_width="wrap_content"
@@ -160,7 +161,9 @@
             android:background="@color/maincolor"
             android:text="갤러리"
             android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_marginHorizontal="5dp"
+            />
         <Button
             android:id="@+id/Button_Coupleprofile_Doubledate"
             android:layout_width="wrap_content"
@@ -169,7 +172,9 @@
             android:background="@color/maincolor"
             android:text="받은 더블데이트 신청"
             android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+
+          />
 
     </LinearLayout>
 

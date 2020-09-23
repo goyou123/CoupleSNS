@@ -1,6 +1,7 @@
 package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.CommentData;
+import com.example.couplesns.DataClass.FollowData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -305,6 +306,47 @@ public interface RetroBaseApiService {
     @FormUrlEncoded
     @POST("secretCommentUpload.php")
     Call<Result_login> secretcommentsupload(@FieldMap HashMap<String, Object> secretcomments);
+
+
+
+    //팔로우 추가하기 - 상대 프로필 액티비티
+    @FormUrlEncoded
+    @POST("follow_add.php")
+    Call<Result_login> follow_add(@FieldMap HashMap<String, Object> addFollow);
+
+
+    //팔로우 취소하기(팔로잉 해제) - 상대 프로필 액티비티
+    @FormUrlEncoded
+    @POST("follow_remove.php")
+    Call<Result_login> follow_remove(@FieldMap HashMap<String, Object> removeFollow);
+
+
+    //팔로우 취소하기(팔로워 삭제) - 상대 프로필 액티비티
+    @FormUrlEncoded
+    @POST("follow_follower_remove.php")
+    Call<Result_login> follower_remove(@FieldMap HashMap<String, Object> removeFollow);
+
+
+
+    //팔로우 검사하기 - 상대 프로필 액티비티
+    @FormUrlEncoded
+    @POST("follow_check.php")
+    Call<ThreeStringData> follow_check(@FieldMap HashMap<String, Object> checkFollow);
+
+
+
+    //팔로"잉" 리스트 - 팔로우 액티비티
+    @FormUrlEncoded
+    @POST("follow_getfollowingList.php")
+    Call<List<FollowData>> follow_getfollowingList(@Field("couplekey") String couplekey);
+
+
+    //팔로"워" 리스트 - 팔로우 액티비티
+    @FormUrlEncoded
+    @POST("follow_getfollowerList.php")
+    Call<List<FollowData>> follow_getfollowerList(@Field("couplekey") String couplekey);
+
+
 
 
 }

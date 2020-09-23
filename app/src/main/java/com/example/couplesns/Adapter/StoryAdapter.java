@@ -483,8 +483,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
                                 Toast.makeText(context, "좋아요!", Toast.LENGTH_SHORT).show();
                                 holder.Storydata_Heartimg.setVisibility(View.INVISIBLE);
                                 holder.Storydata_Heartimg2.setVisibility(View.VISIBLE);
-
-                                //일단 인텐트플래그를 통해 좋아요 숫자가 바로 반영되도록 한다. >> 수정필요
+//                                notifyDataSetChanged();
+//                                //일단 인텐트플래그를 통해 좋아요 숫자가 바로 반영되도록 한다. >> 수정필요
                                 Intent intent = new Intent(context,RealMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 context.startActivity(intent);
@@ -531,7 +531,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
                                 Toast.makeText(context, "좋아요 취소", Toast.LENGTH_SHORT).show();
                                 holder.Storydata_Heartimg2.setVisibility(View.INVISIBLE);
                                 holder.Storydata_Heartimg.setVisibility(View.VISIBLE);
-
+//                                notifyDataSetChanged();
                                 Intent intent = new Intent(context,RealMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 context.startActivity(intent);

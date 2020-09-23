@@ -57,7 +57,13 @@ public class EditSecretStoryActivity extends AppCompatActivity {
             }
         });
 
-
+        //뒤로가기 클릭
+        Imageview_EditSecretWriteStory_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
     }//OnCreate

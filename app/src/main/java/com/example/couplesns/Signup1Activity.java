@@ -38,7 +38,7 @@ public class Signup1Activity extends AppCompatActivity {
     String name,email,phone,password,pwcheck,sex,randomKey;
 
     ApplicationClass applicationClass;
-    String default_frofile;
+    String default_frofile ="default_profile.png";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,7 +169,7 @@ public class Signup1Activity extends AppCompatActivity {
         String hashPassword = applicationClass.encryptSHA256(password);
         Log.d("회원가입 액티비티", "hashPassword: 비번 암호화 :  "+hashPassword);
 
-       default_frofile = "default_profile.png";
+//       default_frofile ="default_profile.png";
         //회원가입 데이터를 해쉬맵 형태로 서버로 전송
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("name", name);

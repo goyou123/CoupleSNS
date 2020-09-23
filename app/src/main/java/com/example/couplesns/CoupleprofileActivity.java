@@ -93,7 +93,7 @@ public class CoupleprofileActivity extends AppCompatActivity {
         Textview_Coupleprofile_Myname = (TextView) findViewById(R.id.Textview_Coupleprofile_Myname); // 내 이름
         Textview_Coupleprofile_Anothername = (TextView) findViewById(R.id.Textview_Coupleprofile_Anothername); //상대이름
         Button_Coupleprofile_Follow = (Button) findViewById(R.id.Button_Coupleprofile_Follow); // 팔로우 버튼
-        Button_Coupleprofile_Star = (Button) findViewById(R.id.Button_Coupleprofile_Star); // 스크랩 버튼
+//        Button_Coupleprofile_Star = (Button) findViewById(R.id.Button_Coupleprofile_Star); // 스크랩 버튼
         Button_Coupleprofile_Gallery = (Button) findViewById(R.id.Button_Coupleprofile_Gallery); // 갤러리 버튼
         Button_Coupleprofile_Doubledate = (Button) findViewById(R.id.Button_Coupleprofile_Doubledate); //받은 더블데이트 버튼
 
@@ -133,7 +133,14 @@ public class CoupleprofileActivity extends AppCompatActivity {
             }
         });
 
-
+        /*팔로우 액티비티로 이동*/
+        Button_Coupleprofile_Follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),FollowActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }//OnCreate
 

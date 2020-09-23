@@ -121,12 +121,22 @@
         android:weightSum="3"
         >
         <Button
+            android:id="@+id/Button_Otherprofile_FollowCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/maincolor"
+            android:text="팔로우 취소"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+        <Button
             android:id="@+id/Button_Otherprofile_Follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/maincolor"
-            android:text="팔로우"
+            android:text="팔로우 하기"
             android:textColor="#fff"
             android:textStyle="bold"/>
 
