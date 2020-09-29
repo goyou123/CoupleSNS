@@ -3,6 +3,7 @@ package com.example.couplesns.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.couplesns.ApplicationClass;
 import com.example.couplesns.DataClass.FollowData;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.ThreeStringData;
+import com.example.couplesns.OtherCoupleProfileActivity;
 import com.example.couplesns.R;
 import com.example.couplesns.RetrofitJava.RetroCallback;
 import com.example.couplesns.RetrofitJava.RetroClient;
@@ -124,6 +126,7 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
 
 
 
+
         /*삭제 버튼 클릭시 내가 팔로워 삭제*/
         holder.Followerdata_RemoveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,9 +190,33 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
 
 
 
+
+
             }
         });
 
+
+
+
+        /*배경 클릭시 상대커플액티비티로 이동*/
+        holder.follower_const1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String writerCouplekey = FollowDataList.get(position).getCouplekeys();//해당 커플키
+                String writerCoupleName = FollowDataList.get(position).getCouplename();//해당 커플키
+                String writerEmail =  FollowDataList.get(position).getMember1();
+
+                Intent intent = new Intent(context, OtherCoupleProfileActivity.class);
+                intent.putExtra("writerCoupleKey",writerCouplekey);
+                intent.putExtra("writerCoupleName",writerCoupleName);
+                intent.putExtra("writerEmail",writerEmail); //다음 액티비티에서 이미지 가져오기 위해
+                //사진 2장을 어떻게 처리할 것인지.
+                // 1. 커플키를 넘기고 그 커플키- 멤버 1,2 를 사용해 이미지를 불러오는 방식?
+                // 2. 3단 조인으로 (그러면 데이터 클래스 구조 바뀌어야함)
+                // 3. 여기서 구한 이미지 2개 를 어떻게든 넘겨보기
+                context.startActivity(intent);
+            }
+        });
 
 
 

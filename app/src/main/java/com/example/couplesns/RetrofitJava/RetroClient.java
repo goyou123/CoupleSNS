@@ -718,6 +718,27 @@ public class RetroClient {
         });
     }
 
+
+    /*메인화면 리사이클러뷰 4 - 팔로우한 커플들의 게시글만 보기 */
+    public void mainStory_follow(String form, String couplekey,final RetroCallback callback){
+        apiService.mainStory_follow(form,couplekey).enqueue(new Callback<List<StoryData>>() {
+            @Override
+            public void onResponse(Call<List<StoryData>> call, Response<List<StoryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StoryData>> call, Throwable t) {
+                Log.d("레트로mainStory_follow", "onFailure: "+ t.toString());
+            }
+        });
+    }
+
     /*상대 프로필 화면에서 상대 커플들이 쓴 게시글만 불러오기*/
     public void getprofilestory(String form, String couplekey, final RetroCallback callback){
         apiService.getprofilestory(form,couplekey).enqueue(new Callback<List<StoryData>>() {

@@ -34,7 +34,8 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
     Button Button_Otherprofile_Follow,Button_Otherprofile_FollowCancel,Button_Otherprofile_Gallery,Button_Otherprofile_Doubledate;
 
     String couplekey,MyEmail;
-    String intentName,intentCouplekey,intentProfile1,intentProfile2;
+    String intentName,intentCouplekey,intentProfile1,intentProfile2; // 스토리 어댑터에서 넘어온 정보
+    String intentEmail; // 팔로우 어댑터에서 넘어온 정보
 
     //리사이클러뷰
     ArrayList<StoryData> storyDataArrayList;
@@ -65,12 +66,49 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
         Button_Otherprofile_Gallery = (Button) findViewById(R.id.Button_Otherprofile_Gallery); // 갤러리 버튼
         Button_Otherprofile_Doubledate = (Button) findViewById(R.id.Button_Otherprofile_Doubledate); //더블데이트 신청 버튼
 
+
+        /*이 상대커플프로필로 들어오는 방법은 2가지가 있다.
+        * 1. 게시글에서 작성자 이름을 클릭 시 (사진이미지까지 ㅇㅋ)
+        * 2. 팔로우,팔로잉  리스트에서 작성자 이름 클릭 시 (사진이미지는 없음..) */
         //스토리 어댑터에서 넘어온 상대 프로필 데이터들
         Intent intent = getIntent();
         intentCouplekey = intent.getStringExtra("writerCoupleKey");
         intentName = intent.getStringExtra("writerCoupleName");
         intentProfile1 = intent.getStringExtra("writerProfile1");
         intentProfile2 = intent.getStringExtra("writerProfile2");
+
+        //팔로우 어댑터에서 넘어온 상대커플1의 이메일
+        intentEmail = intent.getStringExtra("writerEmail");
+
+        //팔로우에서 넘어왔을 때는 프로필 정보가 없음.. 그러므로 이미지정보 얻어오기
+        if(intentEmail!=null) {
+            applicationClass.retroClient.getprofiles(intentEmail, intentCouplekey, new RetroCallback() {
+                @Override
+                public void onError(Throwable t) {
+                    Log.d(TAG, "onError: "+t.toString());
+                }
+
+                @Override
+                public void onSuccess(int code, Object receivedData) {
+                    Log.d(TAG, "onSuccess: "+code);
+                    ThreeStringData data = (ThreeStringData)receivedData;
+                    String member1 = data.getFirst();
+                    String member2 = data.getSecond();
+
+                    Glide.with(getApplicationContext()).load("http://13.125.182.117/img/"+member1).into(Imageview_Otherprofile_Myprofile);
+                    Glide.with(getApplicationContext()).load("http://13.125.182.117/img/"+member2).into(Imageview_Otherprofile_Anotherprofile);
+
+                }
+
+                @Override
+                public void onFailure(int code) {
+                    Log.d(TAG, "onFailure: "+code);
+                }
+            });
+
+        }
+
+
 
         //은찬 ♥ 민선 이름 잘라서 붙히기
         String splits[];
