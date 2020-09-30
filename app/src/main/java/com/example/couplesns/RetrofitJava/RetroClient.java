@@ -2,6 +2,7 @@ package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.FollowData;
+import com.example.couplesns.DataClass.GalleryData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -1115,6 +1116,25 @@ public class RetroClient {
         });
     }
 
+
+    /*갤러리 이미지 리슽트 리사이클러뷰 보이기 -> 갤러리 액티비티*/
+    public void gallery_getImageList(String couplekey, final RetroCallback callback){
+        apiService.gallery_getImageList(couplekey).enqueue(new Callback<List<GalleryData>>() {
+            @Override
+            public void onResponse(Call<List<GalleryData>> call, Response<List<GalleryData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GalleryData>> call, Throwable t) {
+                Log.d("gallery_getImageList", "onFailure: "+t.toString());
+            }
+        });
+    }
 
 
 

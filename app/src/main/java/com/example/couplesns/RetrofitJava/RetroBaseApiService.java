@@ -2,6 +2,7 @@ package com.example.couplesns.RetrofitJava;
 
 import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.FollowData;
+import com.example.couplesns.DataClass.GalleryData;
 import com.example.couplesns.DataClass.ImgData_ex;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
@@ -353,6 +354,13 @@ public interface RetroBaseApiService {
     @FormUrlEncoded
     @POST("follow_getfollowerList.php")
     Call<List<FollowData>> follow_getfollowerList(@Field("couplekey") String couplekey);
+
+
+
+    //갤러리 이미지
+    @FormUrlEncoded
+    @POST("gallery_getImageList.php")
+    Call<List<GalleryData>> gallery_getImageList(@Field("couplekey") String couplekey);
 
 
 

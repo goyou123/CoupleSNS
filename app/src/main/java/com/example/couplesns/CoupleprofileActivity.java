@@ -142,6 +142,16 @@ public class CoupleprofileActivity extends AppCompatActivity {
             }
         });
 
+        /*갤러리 액티비티로 이동*/
+        Button_Coupleprofile_Gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),GalleryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }//OnCreate
 
 

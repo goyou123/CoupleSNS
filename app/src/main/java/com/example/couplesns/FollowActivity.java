@@ -30,7 +30,7 @@ public class FollowActivity extends AppCompatActivity {
 
     //리사이클러뷰
     ArrayList<FollowData> followDataArrayList,followDataArrayList2;
-    ArrayList<FollowData> setFollowerList,setFollowingList;
+    ArrayList<FollowData> setFollowerList,setFollowingList; //검색에 사용될 리스트
     RecyclerView recyclerView,recyclerView2;
     RecyclerView.LayoutManager layoutManager,layoutManager2;
     FollowingAdapter followingAdapter;
