@@ -409,6 +409,7 @@ public class RealMainActivity extends AppCompatActivity {
                 recyclerView = findViewById(R.id.RCV_Main_View1);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(RealMainActivity.this);
+//                layoutManager.scrollToPosition(3);
                 recyclerView.setLayoutManager(layoutManager);
 
 //                StoryAdapter.StateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW;
@@ -545,13 +546,14 @@ public class RealMainActivity extends AppCompatActivity {
                 List<StoryData> storyData = (List<StoryData>)receivedData;
 
                 Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
-                for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
+
+                for (int i = 0; i<storyData.size(); i++){
 
                     //댓글 리사이클러뷰에 보여줄 데이터 > 리스트에 추가
                     storyDataArrayList4.add(storyData.get(i));
                     Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList4);
                 }
-
+                Log.d(TAG, "팔로우게시글모아보기 갯수: "+storyData.size());
                 //리사이클러뷰 연결
                 recyclerView4 = findViewById(R.id.RCV_Main_View4);
                 recyclerView4.setHasFixedSize(true);
@@ -560,7 +562,7 @@ public class RealMainActivity extends AppCompatActivity {
 
                 storyAdapter4 = new StoryAdapter(storyDataArrayList4,RealMainActivity.this); // 스토리어댑터
                 storyAdapter4.notifyDataSetChanged();
-                storyAdapter4.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+//                storyAdapter4.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
 
                 recyclerView4.setAdapter(storyAdapter4); // 리사이클러뷰에 어댑터 연결
                 Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList4);

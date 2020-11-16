@@ -55,6 +55,7 @@ public class GalleryActivity extends AppCompatActivity {
         getGalleryRecyclerView();
     }
 
+    /*갤러리 형식으로 보여줌*/
     public void getGalleryRecyclerView(){
         galleryDataArrayList = new ArrayList<>();
 

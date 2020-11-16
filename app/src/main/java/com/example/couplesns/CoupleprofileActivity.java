@@ -72,7 +72,8 @@ public class CoupleprofileActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     StoryAdapter storyAdapter;
 
-
+    int position;
+    int imgs_lenght;
 
 
     @Override
@@ -109,6 +110,8 @@ public class CoupleprofileActivity extends AppCompatActivity {
 
         //내 이름과 상대이름 불러오기
         getuserinfo();
+
+
 
 
 //        //데이트피커
@@ -295,6 +298,12 @@ public class CoupleprofileActivity extends AppCompatActivity {
     /*우리커플이 쓴 게시물 리사이클러뷰 불러오기*/
     public void ourStory(){
 
+        /*갤러리 액티비티에서 넘어왔을 때*/
+        Intent intent = getIntent();
+        position = intent.getIntExtra("position",999);
+        imgs_lenght =  intent.getIntExtra("size",999);
+        Log.d(TAG, "갤러리사진들사이즈: "+imgs_lenght);
+
         storyDataArrayList = new ArrayList<>();
 
         /*서버에서 데이터 리스트 받아와서 보여주기*/
@@ -317,10 +326,27 @@ public class CoupleprofileActivity extends AppCompatActivity {
                     Log.d(TAG, "onCreate: 리사이클러뷰리스트"+storyDataArrayList);
                 }
 
+                Log.d(TAG, "onSuccess: 포지션 : "+position);
                 //리사이클러뷰 연결
                 recyclerView = findViewById(R.id.RCV_MyProfile);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(CoupleprofileActivity.this);
+
+                /*갤러리액티비티에서 넘어왔을때 해당 포지션의 리사이클러뷰로 바로 이동*/
+                if(position!=999){
+                    //해당 글 이 있는 리사이클러뷰의 위치로 이동
+                    int pos = imgs_lenght-position-1;
+                    Log.d(TAG, "갤러리사진들글위치: "+pos);
+                    layoutManager.scrollToPosition(pos);
+                    recyclerView.setLayoutManager(layoutManager);
+
+                    storyAdapter = new StoryAdapter(storyDataArrayList,CoupleprofileActivity.this); // 스토리어댑터
+                    storyAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(storyAdapter); // 리사이클러뷰에 어댑터 연결
+                    Log.d(TAG, "onSuccess: 갤러리-실행");
+                }
+                
+                
                 recyclerView.setLayoutManager(layoutManager);
 
                 storyAdapter = new StoryAdapter(storyDataArrayList,CoupleprofileActivity.this); // 스토리어댑터

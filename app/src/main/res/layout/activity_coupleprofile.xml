@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/maincolor"
-            android:text="받은 더블데이트 신청"
+            android:text="채팅"
             android:textColor="#fff"
             android:textStyle="bold"
 
