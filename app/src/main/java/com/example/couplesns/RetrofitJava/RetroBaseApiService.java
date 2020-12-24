@@ -363,6 +363,14 @@ public interface RetroBaseApiService {
     Call<List<GalleryData>> gallery_getImageList(@Field("couplekey") String couplekey);
 
 
+    //오랜만. 상대프로필에서 신청을 눌러서 채팅방으로 넘어갈 때 idx값들을 인텐트로 넘긴다. 총 4명인데 그중 상대프로필을 가져오기 위해
+    @FormUrlEncoded
+    @POST("chat_getIdx.php")
+    Call<List<ThreeStringData>> chat_getIdx(@Field("other_couplekey") String other_couplekey, @Field("our_couplekey") String our_couplekey);
+
+
+
+
 
 
 }

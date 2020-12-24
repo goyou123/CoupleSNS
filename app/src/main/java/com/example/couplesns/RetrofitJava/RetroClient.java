@@ -1137,6 +1137,26 @@ public class RetroClient {
     }
 
 
+    /*채팅화면으로 idx값 넘기기 -> 상대커플액티비티*/
+    public void chat_getIdx(String other_couplekey, String our_couplekey, final RetroCallback callback){
+        apiService.chat_getIdx(other_couplekey,our_couplekey).enqueue(new Callback<List<ThreeStringData>>() {
+            @Override
+            public void onResponse(Call<List<ThreeStringData>> call, Response<List<ThreeStringData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ThreeStringData>> call, Throwable t) {
+                Log.d("gallery_getImageList", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
 
 
 

@@ -78,7 +78,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         for (int i=0; i<imgs.length; i++){
             Log.d("이미지들분할", "onBindViewHolder: "+serverImageRoot+imgs[i]);
 //            gi.add(new StoryImageData(serverImageRoot+imgs[i]));
-            Glide.with(holder.itemView).load(serverImageRoot+imgs[0]).into(holder.Gallerydata_Image);
+            Glide.with(holder.itemView).load(serverImageRoot+imgs[0]).override(300,300).into(holder.Gallerydata_Image);
             if(imgs.length==1){
                 holder.TEXT1.setText("no more");
             }else{

@@ -7,8 +7,12 @@
 <!--    <color name="subcolor">#FA8559</color>-->
 <!--    <color name="maincolor">#ff4500</color>-->
     <color name="maincolor">#AB62F4</color>
+<!--    <color name="maincolor">#843bed</color>-->
+
 <!--    <color name="maincolor">#ccaaee</color>-->
     <color name="subcolor">#9191FF</color>
+<!--    원래이거-->
+<!--        <color name="subcolor">#c5a2fe</color>-->
 <!--    <color name="subcolor">#ccccff</color>-->
     <color name="textcolor">#222222</color>
     <color name="textcolor2">#e5e5e5</color>

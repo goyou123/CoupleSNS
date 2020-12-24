@@ -317,7 +317,7 @@ public class CoupleprofileActivity extends AppCompatActivity {
             public void onSuccess(int code, Object receivedData) {
                 Log.d(TAG, "onSuccess:메인 리사이클러뷰 불러오기 "+code);
                 List<StoryData> storyData = (List<StoryData>)receivedData;
-
+                Button_Coupleprofile_Gallery.setText(" 갤러리 "+storyData.size());
                 Log.d(TAG, "onSuccess: 리사이클러뷰 데이터"+storyData);
                 for (int i = 0; i<((List<StoryData>) receivedData).size(); i++){
 

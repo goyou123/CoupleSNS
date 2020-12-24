@@ -279,7 +279,7 @@
         android:layout_height="50dp"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@id/line5"
-        android:background="@drawable/plu1s"
+        android:background="@drawable/main_plus"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"/>

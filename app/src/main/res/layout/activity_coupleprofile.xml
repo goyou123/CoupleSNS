@@ -4,28 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoupleprofileActivity">
+    tools:context=".CoupleprofileActivity"
+    android:background="#fff">
 
     <ImageView
         android:id="@+id/Imageview_Coupleprofile_Background"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:background="@color/subcolor"
+        android:background="#fff"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <TextView
         android:id="@+id/Textview_Coupleprofile_Maintext"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="10dp"
+        android:paddingVertical="7dp"
         android:text="우리의 커플 피드"
         android:textColor="#fff"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@color/maincolor"
+        android:gravity="center"/>
 
     <ImageView
         android:id="@+id/Imageview_Coupleprofile_back"
@@ -74,7 +77,7 @@
         app:layout_constraintRight_toLeftOf="@id/Imageview_Coupleprofile_Anotherprofile"
         android:layout_marginTop="30dp"
         android:textSize="16sp"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:gravity="center"
         android:clickable="true"
         />
@@ -100,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Coupleprofile_Myprofile"
         app:layout_constraintRight_toRightOf="@id/Imageview_Coupleprofile_Myprofile"
         app:layout_constraintLeft_toLeftOf="@id/Imageview_Coupleprofile_Myprofile"
-        android:textColor="#fff"
+        android:textColor="#000"
         />
     <TextView
         android:id="@+id/Textview_Coupleprofile_Anothername"
@@ -111,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Coupleprofile_Anotherprofile"
         app:layout_constraintRight_toRightOf="@id/Imageview_Coupleprofile_Anotherprofile"
         app:layout_constraintLeft_toLeftOf="@id/Imageview_Coupleprofile_Anotherprofile"
-        android:textColor="#fff"
+        android:textColor="#000"
         />
     <ImageView
         android:id="@+id/ImageView_Coupleprofile_Edit"
@@ -139,9 +142,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="팔로우"
-            android:textColor="#fff"
+            android:textColor="@color/maincolor"
             android:textStyle="bold"
            />
 <!--        <Button-->
@@ -158,20 +161,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#Fff"
             android:text="갤러리"
-            android:textColor="#fff"
+            android:textColor="@color/maincolor"
             android:textStyle="bold"
-            android:layout_marginHorizontal="5dp"
+
             />
         <Button
             android:id="@+id/Button_Coupleprofile_Doubledate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="채팅"
-            android:textColor="#fff"
+            android:textColor="@color/maincolor"
             android:textStyle="bold"
 
           />

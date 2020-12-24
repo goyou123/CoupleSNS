@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/Otherchat_profileimg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/subcolor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="10dp"
+        />
+
+    <TextView
+        android:id="@+id/Otherchat_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="유저1"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_profileimg"
+        app:layout_constraintTop_toTopOf="@id/Otherchat_profileimg"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/Otherchat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="테스트 메세지입니다."
+        app:layout_constraintTop_toBottomOf="@id/Otherchat_user_name"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_profileimg"
+        android:textSize="15sp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/coner_sub2_full"
+        android:padding="10dp"
+        />
+
+    <TextView
+    android:id="@+id/Otherchat_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="2020.12.18 17:40"
+    app:layout_constraintLeft_toRightOf="@id/Otherchat_message"
+    app:layout_constraintBottom_toBottomOf="@id/Otherchat_message"
+    android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/Otherchat_read_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_time"
+        app:layout_constraintBottom_toBottomOf="@id/Otherchat_time"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/maincolor"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

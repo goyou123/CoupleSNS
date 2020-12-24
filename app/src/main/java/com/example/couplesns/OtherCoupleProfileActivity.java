@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.couplesns.Adapter.StoryAdapter;
+import com.example.couplesns.DataClass.GalleryData;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryData;
 import com.example.couplesns.DataClass.ThreeStringData;
@@ -43,6 +44,8 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     StoryAdapter storyAdapter;
 
+
+    ArrayList chat_idx_List;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +177,18 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
             }
         });
 
+        //채팅신청 버튼 클릭 시
+        Button_Otherprofile_Doubledate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*이 때, 방이 있는지 없는지 체크하고 없으면 방생성, 있으면 기존 데이터를 보여준다.
+                * 그리고 인텐트로 해당 커플들의 값 (식별할수있는) 을넘겨준다. */
+
+                idx_into_chat();
+
+            }
+        });
+
 
     }//OnCreate
 
@@ -182,9 +197,69 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
         super.onResume();
         otherStory(); //상대 커플이 쓴 게시글만 불러오기
         checkfollow(); //팔로우 값 체크
+
     }
 
+    /*채팅하고싶은 커플들의 idx,이름 가져와서 채팅방으로 넘기기*/
+    public void idx_into_chat () {
+        applicationClass.retroClient.chat_getIdx(intentCouplekey, couplekey,new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
 
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+//                ArrayList chat_idx_List;
+                List<ThreeStringData> data = (List<ThreeStringData>)receivedData;
+                Log.d(TAG, "onSuccess: 채팅 IDX "+data);
+                String other_idx1 = data.get(0).getFirst();
+                String other_idx2 = data.get(1).getFirst();
+
+                String our_idx1 = data.get(0).getThird();
+                String our_idx2 = data.get(1).getThird();
+
+
+                String other_name1 = data.get(0).getSecond();
+                String other_name2 = data.get(1).getSecond();
+
+                String our_name1 = data.get(0).getFour();
+                String our_name2 = data.get(1).getFour();
+
+                Log.d(TAG, "상대 첫번째: " +other_idx1 + " / "+other_name1);
+                Log.d(TAG, "상대 두번째: " +other_idx2 + " / "+other_name2);
+
+
+                Log.d(TAG, "우리 첫번째: " +our_idx1 + " / "+our_name1);
+                Log.d(TAG, "우리 두번째: " +our_idx2 + " / "+our_name2);
+
+                Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+                intent.putExtra("other_idx1",other_idx1); //상대방  1 idx
+                intent.putExtra("other_idx2",other_idx2); //상대방 2 idx
+                intent.putExtra("other_name1",other_name1); // 상대방 1 이름
+                intent.putExtra("other_name2",other_name2); // 상대방 2 이름
+                intent.putExtra("our_idx1",our_idx1); // 내 idx
+                intent.putExtra("our_idx2",our_idx2); // 내 커플 idx
+                intent.putExtra("our_name1",our_name1); // 내 이름
+                intent.putExtra("our_name2",our_name2); // 내 커플 이름
+
+                startActivity(intent);
+                //우리 idx
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+
+
+
+    }//idx_into_chat()
 
     /*상대방 커플이 쓴 게시글 모아보기*/
     public void otherStory(){

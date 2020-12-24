@@ -10,22 +10,24 @@
         android:id="@+id/Imageview_Otherprofile_Background"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:background="@color/subcolor"
+        android:background="#fff"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <TextView
         android:id="@+id/Textview_Otherprofile_Maintext"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="10dp"
+        android:paddingVertical="8dp"
         android:text="상대방 커플 피드"
         android:textColor="#fff"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@color/maincolor"
+        android:gravity="center"/>
 
     <ImageView
         android:id="@+id/Imageview_Otherprofile_back"
@@ -60,7 +62,7 @@
         app:layout_constraintRight_toLeftOf="@id/Imageview_Otherprofile_Anotherprofile"
         android:layout_marginTop="30dp"
         android:textSize="16sp"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:gravity="center"
         android:clickable="true"
         />
@@ -86,7 +88,8 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Otherprofile_Myprofile"
         app:layout_constraintRight_toRightOf="@id/Imageview_Otherprofile_Myprofile"
         app:layout_constraintLeft_toLeftOf="@id/Imageview_Otherprofile_Myprofile"
-        android:textColor="#fff"
+        android:textColor="#000"
+        android:textStyle="bold"
         />
     <TextView
         android:id="@+id/Textview_Otherprofile_Anothername"
@@ -97,7 +100,8 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Otherprofile_Anotherprofile"
         app:layout_constraintRight_toRightOf="@id/Imageview_Otherprofile_Anotherprofile"
         app:layout_constraintLeft_toLeftOf="@id/Imageview_Otherprofile_Anotherprofile"
-        android:textColor="#fff"
+        android:textColor="#000"
+        android:textStyle="bold"
         />
 <!--    <ImageView-->
 <!--        android:id="@+id/ImageView_Otherprofile_Edit"-->
@@ -116,48 +120,54 @@
         app:layout_constraintTop_toBottomOf="@id/Imageview_Otherprofile_Background"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@color/maincolor"
+        android:background="#fff"
         android:orientation="horizontal"
         android:weightSum="3"
+
         >
         <Button
             android:id="@+id/Button_Otherprofile_FollowCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="팔로우 취소"
-            android:textColor="#fff"
+            android:textColor="@color/maincolor"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone"
+
+            />
         <Button
             android:id="@+id/Button_Otherprofile_Follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="팔로우 하기"
-            android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textColor="@color/maincolor"
+            android:textStyle="bold"
+           />
 
         <Button
             android:id="@+id/Button_Otherprofile_Gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="갤러리"
-            android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textColor="@color/maincolor"
+            android:textStyle="bold"
+           />
         <Button
             android:id="@+id/Button_Otherprofile_Doubledate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/maincolor"
+            android:background="#fff"
             android:text="커플채팅 신청"
-            android:textColor="#fff"
-            android:textStyle="bold"/>
+            android:textColor="@color/maincolor"
+            android:textStyle="bold"
+           />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

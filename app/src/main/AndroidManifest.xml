@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".GalleryActivity"></activity>
+        <activity android:name=".ChatListActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".GalleryActivity" />
         <activity android:name=".FollowActivity" />
         <activity android:name=".EditSecretStoryActivity" />
         <activity android:name=".OtherCoupleProfileActivity" />

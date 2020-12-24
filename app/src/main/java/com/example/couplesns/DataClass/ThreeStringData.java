@@ -4,11 +4,13 @@ public class ThreeStringData {
     String first;
     String second;
     String third;
+    String four;
 
-    public ThreeStringData(String first, String second, String third) {
+    public ThreeStringData(String first, String second, String third, String four) {
         this.first = first;
         this.second = second;
         this.third = third;
+        this.four = four;
     }
 
     public String getFirst() {
@@ -33,5 +35,13 @@ public class ThreeStringData {
 
     public void setThird(String third) {
         this.third = third;
+    }
+
+    public String getFour() {
+        return four;
+    }
+
+    public void setFour(String four) {
+        this.four = four;
     }
 }

@@ -118,7 +118,13 @@ public class RealMainActivity extends AppCompatActivity {
 
 
 
-
+        Button_Main_Chatting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ChatListActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
