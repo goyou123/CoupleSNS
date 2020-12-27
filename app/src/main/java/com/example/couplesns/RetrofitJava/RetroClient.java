@@ -1157,6 +1157,24 @@ public class RetroClient {
     }
 
 
+    /*채팅화면에서 이메일을통해 내 이름 , 이미지사진 주소 가져오기*/
+    public void chat_myname_myimg(String email, final RetroCallback callback){
+        apiService.chat_myname_myimg(email).enqueue(new Callback<ThreeStringData>() {
+            @Override
+            public void onResponse(Call<ThreeStringData> call, Response<ThreeStringData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ThreeStringData> call, Throwable t) {
+                Log.d("gallery_getImageList", "onFailure: "+t.toString());
+            }
+        });
+    }
 
 
 

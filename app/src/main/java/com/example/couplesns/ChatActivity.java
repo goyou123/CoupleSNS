@@ -19,6 +19,10 @@ import android.widget.Toast;
 
 import com.example.couplesns.Adapter.ChatAdapter;
 import com.example.couplesns.DataClass.ChatData;
+import com.example.couplesns.DataClass.Result_login;
+import com.example.couplesns.DataClass.StoryImageData;
+import com.example.couplesns.DataClass.ThreeStringData;
+import com.example.couplesns.RetrofitJava.RetroCallback;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +33,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.example.couplesns.ApplicationClass.serverImageRoot;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -39,6 +47,11 @@ public class ChatActivity extends AppCompatActivity {
     EditText Edittext_Chat_Write;
     Button Button_Chatting;
     Context context;
+
+    ApplicationClass applicationClass;
+    String couplekey,MyEmail, myname,read_result,myprofileimg,msg_type,getTime;
+
+    String chat[];
 
     //채팅관련
     private Handler mHandler;
@@ -52,6 +65,8 @@ public class ChatActivity extends AppCompatActivity {
     String read;
     String sendmsg;
     String UserID;
+
+
     //리사이클러뷰
     ArrayList<ChatData> chatDataArrayList;
     RecyclerView recyclerView;
@@ -75,11 +90,24 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
 
+        applicationClass = (ApplicationClass) getApplicationContext();
+
+        //로그인한 유저의 이메일과 커플키
+        couplekey = applicationClass.getShared_Couplekey();
+        MyEmail = applicationClass.getShared_Email();
+        Log.d(TAG, "로그인한 유저의 커플키와 이메일: "+couplekey +" / "+ MyEmail);
+
+        //XML 연결
         Textview_Chat_Users = (TextView) findViewById(R.id.Textview_Chat_Users);
         Imageview_Chat_Add = (ImageView) findViewById(R.id.Imageview_Chat_Add);
         Edittext_Chat_Write = (EditText) findViewById(R.id.Edittext_Chat_Write);
         Button_Chatting = (Button) findViewById(R.id.Button_Chatting);
         testview = (TextView) findViewById(R.id.testview);
+
+        /**/
+        chatDataArrayList = new ArrayList<>();
+
+
         mHandler = new Handler();
 
 //        getChatRecyclerView();
@@ -98,13 +126,47 @@ public class ChatActivity extends AppCompatActivity {
 
         Log.d(TAG, "상대커플프로필에서 넘어온 인텐트 상대: " + other_idx1 + " / " + other_name1 + " / " + other_idx2 + " / " + other_name2);
         Log.d(TAG, "상대커플프로필에서 넘어온 인텐트 우리: " + our_idx1 + " / " + our_name1 + " / " + our_idx2 + " / " + our_name2);
-        /*채팅방에서 들어왔을 때*/
+
         Textview_Chat_Users.setText(our_name1 + ", " + our_name2 + ", " + other_name1 + ", " + other_name2);
-        String addr = "192.168.147.1"; //VMWARE 1 ->이거라고..?
+//        String addr = "192.168.147.1"; //VMWARE 1 ->이거라고..? // 이클립스
 //        String addr = "192.168.30.1"; //VMWARE 8
 //        String addr = "192.168.123.103"; // 무선 LAN 어댑터 WI-FI -> 네트워크 연결 없음 뜸
 //        String addr = "116.37.162.156"; //네이버 검색  -> 쓰레드가 실행이 안됨 아예 (이게 맞는거 같긴 한데..)
 //        String addr = "115.115.33.333.156"; //아무거나 테스트 -> 에러메세지 잘 뜸
+        String addr = "13.125.182.117"; //VMWARE 1 ->이거라고..?
+        /*채팅방에서 들어왔을 때 추가해야함*/
+        //추가하세염
+
+
+        /*이메일로 받아온 이름,프로필이미지  -> 후에 전송*/
+        applicationClass.retroClient.chat_myname_myimg(MyEmail, new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                ThreeStringData data = (ThreeStringData)receivedData;
+                myname = data.getFirst();
+                myprofileimg = data.getSecond();
+                Log.d(TAG, "이메일통해불러온 내 이름, 프사: " + myname + " / "+myprofileimg);
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+
+        /*날짜 가져오기 */
+        //현재시간
+        long mNow = System.currentTimeMillis();
+        Date mDate = new Date(mNow);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        getTime = simpleDate.format(mDate);
+
+        /*클라이언트 소켓 생성하여 서버로 전송하는 쓰레드*/
         ConnectThread thread = new ConnectThread(addr);
         thread.start();
 
@@ -166,19 +228,28 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendmsg = Edittext_Chat_Write.getText().toString();
+                read_result ="0";
+                msg_type = "me";
                 new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         try {
                             Log.d(TAG, "run: 메세지 전송 버튼 클릭시 이 로그가 실행됩니다.");
-                            String send = our_name1 +" : "+ sendmsg;
-                            sendWriter.println(our_name1 +" : "+ sendmsg); //서버로 메세지 보낼때 println
-//                            sendWriter.println(sendmsg); //서버로 메세지 보낼때 println
 
-                            Log.d(TAG, "전송버튼 클릭시 서버로 이 메세지들을 보냅니다 : "+our_name1 +">>>" + sendmsg);
+                            /*1. 서버로 보낼 값들을 정리한다. (이름,메세지,프사,시간,메세지 타입 )
+                            * 2. 하나의 String으로 묶는다 (구분자 추가)
+                            * 3. 서버로 불러온 다음 구분자별로 나눈다
+                            * 4. 나눈 값들을 리사이클러뷰 어레이리스트에 추가한다. */
+
+                            String send = myname +"--"+ MyEmail +"--"+ sendmsg + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type ;
+//                            sendWriter.println(our_name1 +" : "+ sendmsg); //서버로 메세지 보낼때 println
+                            sendWriter.println(send); //이름
+
+                            Log.d(TAG, "전송버튼 클릭시 서버로 이 메세지들을 보냅니다 : "+send);
                             sendWriter.flush(); //전송하고 남아있는 스트림을 싹 비운다 > 확인, 데이터보낼때마다 해줘야함
                             Edittext_Chat_Write.setText("");
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -191,6 +262,9 @@ public class ChatActivity extends AppCompatActivity {
 
     }//onCreate
 
+
+
+    /*서버로부터 데이터를 받아와 그 데이터를 화면에 뿌려주는 (리사이클러뷰에 추가하는) 부분*/
     class msgUpdate implements Runnable {
         private String msg;
         public msgUpdate(String str)
@@ -198,15 +272,35 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            TextView testview = (TextView) findViewById(R.id.testview);
-            testview.setText(testview.getText().toString() + msg + "\n");
-//            testview.setText(msg);
+//            텍스트뷰에 붙히기
+//            TextView testview = (TextView) findViewById(R.id.testview);
+//            testview.setText(testview.getText().toString() + msg + "\n");
             Log.d(TAG, "msgUpdate: 텍스트 업데이트 실행 Runnable");
-//            testview.setText(msg+"\n");
+
+            /*리사이클러뷰에 추가 */
+            Log.d(TAG, "서버에서 받아서 Runnable에 들어온 내용: " +msg);
+            chat = msg.split("--");
+
+            /*채팅방리스트에서 이방으로 들어와야겠지? */
+            if(chat[1].equals(MyEmail)){
+                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],chat[6]));
+            } else {
+                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],"other"));
+            }
+//            Log.d(TAG, "run: ");
+            recyclerView = findViewById(R.id.RCV_Chat);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(ChatActivity.this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            chatAdapter = new ChatAdapter(chatDataArrayList, ChatActivity.this);
+            chatAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(chatAdapter);
         }
     }
 
 
+    /*온스탑일때 소켓과 inputstream 닫기*/
     @Override
     protected void onStop() {
         super.onStop();
@@ -249,7 +343,9 @@ public class ChatActivity extends AppCompatActivity {
                 //outputstream을 할 수 있는 sendwritrer을 만들고 sendwritrer을 통해서 데이터를 보낸다. 보낼수 있게 생성해줌
                 sendWriter = new PrintWriter(socket.getOutputStream()); //socket.getOutputStream() -> 데이터를 보냄
 
-                //듣는거, Input스트림은 계속 돌아가고 있어야 데이터를 받는다.
+
+                /*서버에서 수신되는 데이터들을 받는 곳곳*/
+                //듣는거, Input트림은 계속 돌아가고 있어야 데이터를 받는다.
                 BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8")); //한글 깨짐 처리
 
                 while(true) {
@@ -259,7 +355,9 @@ public class ChatActivity extends AppCompatActivity {
                     if (read != null) {
                         mHandler.post(new msgUpdate(read));
                         Log.d(TAG, "서버에서 받아서 "+read+" 를 핸들러로");
-//                        testview.setText(testview.getText().toString() + read + "\n");
+//                        testview.setText(testview.getText().toString() + read + "\n"); //여기에 바로 적용못시킴 (쓰레드 )
+
+
                     }
                 }
 
@@ -279,8 +377,8 @@ public class ChatActivity extends AppCompatActivity {
                 Log.e(TAG, " 생성 Error : 네트워크 응답 없음" +ioe.toString());
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Error : 네트워크 응답 없음",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Error : 네트워크 응답 없음",
+//                                Toast.LENGTH_SHORT).show();
 
                     }
                 });

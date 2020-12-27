@@ -370,6 +370,11 @@ public interface RetroBaseApiService {
 
 
 
+    //채팅액티비티에서 이메일을 통해 나의 이름과 프로필사진 주소 가져오기
+    //팔로우 검사하기 - 상대 프로필 액티비티
+    @FormUrlEncoded
+    @POST("chat_myname_myimg.php")
+    Call<ThreeStringData> chat_myname_myimg(@Field("email") String email);
 
 
 

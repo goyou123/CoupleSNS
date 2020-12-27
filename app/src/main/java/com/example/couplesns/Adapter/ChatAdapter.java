@@ -70,6 +70,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         } else if (get_msg_type.equals("other")) {
             i = 2;
 
+        } else {
+            //후에 빼면됨 이상하면
+            i = 1;
         }
         Log.d("스토리 리사이클러뷰 뷰타입 결정", "getItemViewType: "+i);
         return i;
@@ -108,9 +111,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             holder.Otherchat_message.setText(ChatDataList.get(position).getMessage());
             holder.Otherchat_user_name.setText(ChatDataList.get(position).getUser_name());
             holder.Otherchat_time.setText(ChatDataList.get(position).getChat_time());
-            int i_result = ChatDataList.get(position).getRead_result();
-            String result = Integer.toString(i_result);
-            holder.Otherchat_read_result.setText(result);
+//            int i_result = ChatDataList.get(position).getRead_result();
+//            String result = Integer.toString(i_result);
+            holder.Otherchat_read_result.setText(ChatDataList.get(position).getRead_result());
 
         }
 

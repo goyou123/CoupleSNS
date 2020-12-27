@@ -75,10 +75,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 //        Glide.with(holder.itemView).load(serverImageRoot+galleryImage).into(holder.Gallerydata_Image);
 
         ArrayList gi = new ArrayList<>();
+
+        final int img_pos = imgs.length - position; //이미지 위치
         for (int i=0; i<imgs.length; i++){
             Log.d("이미지들분할", "onBindViewHolder: "+serverImageRoot+imgs[i]);
 //            gi.add(new StoryImageData(serverImageRoot+imgs[i]));
-            Glide.with(holder.itemView).load(serverImageRoot+imgs[0]).override(300,300).into(holder.Gallerydata_Image);
+
+            Glide.with(holder.itemView).load(serverImageRoot+imgs[0]).override(600,600).into(holder.Gallerydata_Image);
             if(imgs.length==1){
                 holder.TEXT1.setText("no more");
             }else{
@@ -93,6 +96,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CoupleprofileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("position",position);
                 intent.putExtra("size",GalleryDataList.size());
                 context.startActivity(intent);

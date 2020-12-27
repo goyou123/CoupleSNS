@@ -44,9 +44,9 @@ public class ChatListActivity extends AppCompatActivity {
 //        chatListAdapter.addItem(new ChatListData("1","Asd","asd",1,"Asd","asd"));
 
 
-        chatListDataArrayList.add(0,new ChatListData("1","Asd","asd",1,"Asd","asd"));
-        chatListDataArrayList.add(1,new ChatListData("1","Asd","asd",1,"Asd","asd"));
-        chatListDataArrayList.add(2,new ChatListData("1","Asd","asd",1,"Asd","asd"));
+        chatListDataArrayList.add(0,new ChatListData("1","이충일,최민선","안녕",1,"Asd","asd"));
+        chatListDataArrayList.add(1,new ChatListData("1","유저3,유저4","asd",2,"Asd","asd"));
+        chatListDataArrayList.add(2,new ChatListData("1","유저5,유저6","asd",1,"Asd","asd"));
 
         Log.d(TAG, "getChatListRCV: "+chatListDataArrayList.size());
         recyclerView = findViewById(R.id.RCV_ChatList);

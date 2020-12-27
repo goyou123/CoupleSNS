@@ -3,18 +3,19 @@ package com.example.couplesns.DataClass;
 public class ChatData {
     String idx;
     String user_name;
+    String email;
     String message;
     String chat_time;
-    int read_result;
+    String read_result;
     String user_profile;
     String msg_type;
 
     public ChatData() {
     }
 
-    public ChatData(String idx, String user_name, String message, String chat_time, int read_result, String user_profile, String msg_type) {
-        this.idx = idx;
+    public ChatData(String user_name, String email, String message, String chat_time, String read_result, String user_profile, String msg_type) {
         this.user_name = user_name;
+        this.email = email;
         this.message = message;
         this.chat_time = chat_time;
         this.read_result = read_result;
@@ -38,6 +39,14 @@ public class ChatData {
         this.user_name = user_name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -54,11 +63,11 @@ public class ChatData {
         this.chat_time = chat_time;
     }
 
-    public int getRead_result() {
+    public String getRead_result() {
         return read_result;
     }
 
-    public void setRead_result(int read_result) {
+    public void setRead_result(String read_result) {
         this.read_result = read_result;
     }
 

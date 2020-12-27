@@ -335,7 +335,8 @@ public class CoupleprofileActivity extends AppCompatActivity {
                 /*갤러리액티비티에서 넘어왔을때 해당 포지션의 리사이클러뷰로 바로 이동*/
                 if(position!=999){
                     //해당 글 이 있는 리사이클러뷰의 위치로 이동
-                    int pos = imgs_lenght-position-1;
+//                    int pos = imgs_lenght-position-1;
+                    int pos = position;
                     Log.d(TAG, "갤러리사진들글위치: "+pos);
                     layoutManager.scrollToPosition(pos);
                     recyclerView.setLayoutManager(layoutManager);

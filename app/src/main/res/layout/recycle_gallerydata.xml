@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
 
     <ImageView
         android:id="@+id/Gallerydata_Image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="135dp"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:clickable="true"/>
+
     <TextView
         android:id="@+id/TEXT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/Gallerydata_Image"
-        app:layout_constraintLeft_toLeftOf="@+id/Gallerydata_Image"
         app:layout_constraintRight_toRightOf="@+id/Gallerydata_Image"
-        app:layout_constraintBottom_toBottomOf="@+id/Gallerydata_Image"
         android:textColor="#fff"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:padding="3dp"
+        android:text=""/>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="@color/subcolor"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <View
