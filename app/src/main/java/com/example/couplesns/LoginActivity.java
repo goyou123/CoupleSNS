@@ -107,6 +107,12 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("로그인시 서버에서 가져온", "getPassword: "+getPassword);
                         Log.d("로그인시 서버에서 가져온", "getCouplekey: "+getCouplekey);
 
+                        /*로그인시 이메일과 커플키 저장*/
+                        SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(inputEmail,getCouplekey); /*로그인한 이메일 - 커플키*/
+                        editor.commit();
+
                         if(getPassword.equals(hashPassword)){
                             if(getCouplekey!=null){
                                 //로그인 성공시

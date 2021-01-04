@@ -9,14 +9,28 @@
     <TextView
         android:id="@+id/Mychatdata_message"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         android:text="채팅내용입니다"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+
         android:background="@drawable/coner_sub_full"
         android:padding="10dp"
         android:layout_margin="7dp"
         android:textSize="15sp"/>
+
+    <ImageView
+        android:id="@+id/Mychatdata_image"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/coner_sub_full_img"
+        android:padding="15dp"
+        android:layout_margin="7dp"
+        android:visibility="gone"
+        />
 
 <!--    <TextView-->
 <!--        android:id="@+id/Mychatdata_read_result"-->
@@ -37,6 +51,16 @@
         app:layout_constraintBottom_toBottomOf="@id/Mychatdata_message"
         app:layout_constraintRight_toLeftOf="@id/Mychatdata_message"
         android:layout_marginRight="15dp"/>
+
+    <TextView
+        android:id="@+id/Mychatdata_time2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020.12.18 17:30"
+        app:layout_constraintBottom_toBottomOf="@id/Mychatdata_image"
+        app:layout_constraintRight_toLeftOf="@id/Mychatdata_image"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,20 @@
         android:padding="10dp"
         />
 
+    <ImageView
+        android:id="@+id/Otherchat_image"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/Otherchat_user_name"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_profileimg"
+        app:layout_constraintRight_toLeftOf="@id/Otherchat_time"
+        android:background="@drawable/coner_sub2_full_img"
+        android:padding="15dp"
+        android:layout_marginLeft="15dp"
+        android:visibility="gone"
+        />
+
+
     <TextView
     android:id="@+id/Otherchat_time"
     android:layout_width="wrap_content"
@@ -49,6 +63,16 @@
     android:layout_marginLeft="5dp"/>
 
     <TextView
+        android:id="@+id/Otherchat_time2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020.12.18 17:40"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_image"
+        app:layout_constraintBottom_toBottomOf="@id/Otherchat_image"
+        android:layout_marginLeft="5dp"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/Otherchat_read_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,6 +81,17 @@
         app:layout_constraintBottom_toBottomOf="@id/Otherchat_time"
         android:layout_marginLeft="5dp"
         android:textColor="@color/maincolor"/>
+
+    <TextView
+        android:id="@+id/Otherchat_read_result2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        app:layout_constraintLeft_toRightOf="@id/Otherchat_time2"
+        app:layout_constraintBottom_toBottomOf="@id/Otherchat_time2"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/maincolor"
+        android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

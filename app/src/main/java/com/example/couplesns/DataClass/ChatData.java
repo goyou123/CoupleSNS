@@ -2,18 +2,22 @@ package com.example.couplesns.DataClass;
 
 public class ChatData {
     String idx;
+    String room_idx; //어느방의 메세지인가
     String user_name;
     String email;
     String message;
     String chat_time;
     String read_result;
     String user_profile;
-    String msg_type;
+    String msg_type; //나의 메세지인지 구분
+    String msg_info; // 이미지 일반 메세지인지
 
     public ChatData() {
     }
 
-    public ChatData(String user_name, String email, String message, String chat_time, String read_result, String user_profile, String msg_type) {
+    public ChatData( String room_idx, String user_name, String email, String message, String chat_time, String read_result, String user_profile, String msg_type, String msg_info) {
+//        this.idx = idx;
+        this.room_idx = room_idx;
         this.user_name = user_name;
         this.email = email;
         this.message = message;
@@ -21,6 +25,7 @@ public class ChatData {
         this.read_result = read_result;
         this.user_profile = user_profile;
         this.msg_type = msg_type;
+        this.msg_info = msg_info;
     }
 
     public String getIdx() {
@@ -85,5 +90,21 @@ public class ChatData {
 
     public void setMsg_type(String msg_type) {
         this.msg_type = msg_type;
+    }
+
+    public String getRoom_idx() {
+        return room_idx;
+    }
+
+    public void setRoom_idx(String room_idx) {
+        this.room_idx = room_idx;
+    }
+
+    public String getMsg_info() {
+        return msg_info;
+    }
+
+    public void setMsg_info(String msg_info) {
+        this.msg_info = msg_info;
     }
 }

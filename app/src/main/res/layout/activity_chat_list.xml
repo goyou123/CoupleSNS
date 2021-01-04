@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="채팅"
+        android:text="채팅 목록"
         android:textStyle="bold"
         android:textSize="20sp"
         android:padding="15dp"

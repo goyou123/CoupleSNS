@@ -1,5 +1,7 @@
 package com.example.couplesns.RetrofitJava;
 
+import com.example.couplesns.DataClass.ChatData;
+import com.example.couplesns.DataClass.ChatListData;
 import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.FollowData;
 import com.example.couplesns.DataClass.GalleryData;
@@ -377,5 +379,45 @@ public interface RetroBaseApiService {
     Call<ThreeStringData> chat_myname_myimg(@Field("email") String email);
 
 
+    //체팅방 생성하기 - 채팅방액티비티
+    @FormUrlEncoded
+    @POST("chat_room_add.php")
+    Call<Result_login> chat_room_add(@FieldMap HashMap<String, Object> addChatRoom);
+
+
+    //이미 채팅방이 있는지 없는지 체크 - 채팅방액티비티
+    @FormUrlEncoded
+    @POST("chat_room_check.php")
+    Call<Result_login> chat_room_check(@FieldMap HashMap<String, Object> addChatRoom);
+
+
+    //이미 채팅리스트 불러오기 - 채팅리스트 액티비티
+    @FormUrlEncoded
+    @POST("chat_get_rooms.php")
+    Call<List<ChatListData>> chat_get_rooms( @Field("couplekey") String couplekey);
+
+
+    //채팅방리스트에서 상대방이름만 2개 불러오깅
+    @FormUrlEncoded
+    @POST("chat_get_othername.php")
+    Call<List<ThreeStringData>> chat_get_othername(@Field("other_couplekey") String other_couplekey);
+
+
+    //채팅방에서 방 있을시에 기존 채팅 데이터 불러옴
+    @FormUrlEncoded
+    @POST("chat_get_chattings.php")
+    Call<List<ChatData>> chat_get_chattings(@Field("room_idx") String room_idx);
+
+
+    //채팅 다중이미지 전송해서 서버에 저장
+    @Multipart
+    @POST("chat_images_upload.php")
+    Call<Result_login> chat_images_upload (@Part ArrayList<MultipartBody.Part> filelist);
+
+    //상대커플프로필에서 채팅 열었을 시, roomid가 없어서 방을 만든것이므로, 만들고 난 다음 roomid를 불러와야 한다.
+    //이때, 방을 만들면 내 커플키가 처음으로 들어가기 때문에 (순서바뀔일이없다) 내 값만 있으면 됨
+    @FormUrlEncoded
+    @POST("chat_get_roomid.php")
+    Call<Result_login> chat_get_roomid(@Field("my_couplekey") String my_couplekey, @Field("other_couplekey") String other_couplekey);
 
 }

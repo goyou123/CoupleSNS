@@ -1,14 +1,21 @@
 package com.example.couplesns;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +25,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.couplesns.Adapter.ChatAdapter;
+import com.example.couplesns.Adapter.ChatListAdapter;
 import com.example.couplesns.DataClass.ChatData;
+import com.example.couplesns.DataClass.ChatListData;
 import com.example.couplesns.DataClass.Result_login;
 import com.example.couplesns.DataClass.StoryImageData;
 import com.example.couplesns.DataClass.ThreeStringData;
+import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RetrofitJava.RetroCallback;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -36,6 +47,12 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static com.example.couplesns.ApplicationClass.serverImageRoot;
 
@@ -49,7 +66,7 @@ public class ChatActivity extends AppCompatActivity {
     Context context;
 
     ApplicationClass applicationClass;
-    String couplekey,MyEmail, myname,read_result,myprofileimg,msg_type,getTime;
+    String couplekey,MyEmail, myname,read_result,myprofileimg,msg_type,getTime,msg_info;
 
     String chat[];
 
@@ -81,8 +98,22 @@ public class ChatActivity extends AppCompatActivity {
     String our_idx2;
     String our_name1;
     String our_name2;
+    String other_couplekey;
+    String addr;
+    String intent_my_couplekey,intent_other_couplekey; // 채팅리스트에서 넘어온 경우 인텐트
 
+
+    String roomID;
     TextView testview;
+    String roomCheck;
+    String send;
+    String first_send;
+    String if_coupleAct_roomid;
+    String first_roomid;
+
+    final static int REQUEST_IMAGE_CODE = 105;
+    ArrayList<String> imageList;
+    ArrayList<MultipartBody.Part> multiList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +122,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         applicationClass = (ApplicationClass) getApplicationContext();
-
+        addr = "13.125.182.117"; // 내 서버 IP
         //로그인한 유저의 이메일과 커플키
         couplekey = applicationClass.getShared_Couplekey();
         MyEmail = applicationClass.getShared_Email();
@@ -110,10 +141,10 @@ public class ChatActivity extends AppCompatActivity {
 
         mHandler = new Handler();
 
-//        getChatRecyclerView();
-        /*일단 저장생각하지말고 소켓 통신 되는지 확인하기기*/
 
+        /*위에 이름 처리 1. 상대커플프로필액티비티에서 넘어 왔을 때*/
         //상대방의 커플 프로필 액티비티에서 넘어 왔을 때
+
         Intent intent = getIntent();
         other_idx1 = intent.getStringExtra("other_idx1"); //상대방  1 idx
         other_idx2 = intent.getStringExtra("other_idx2"); //상대방 2 idx
@@ -123,20 +154,116 @@ public class ChatActivity extends AppCompatActivity {
         our_idx2 = intent.getStringExtra("our_idx2");// 내 커플 idx
         our_name1 = intent.getStringExtra("our_name1"); // 내 이름
         our_name2 = intent.getStringExtra("our_name2");// 내 커플 이름
+        other_couplekey = intent.getStringExtra("other_couplekey"); //상대방의 커플 키
 
         Log.d(TAG, "상대커플프로필에서 넘어온 인텐트 상대: " + other_idx1 + " / " + other_name1 + " / " + other_idx2 + " / " + other_name2);
         Log.d(TAG, "상대커플프로필에서 넘어온 인텐트 우리: " + our_idx1 + " / " + our_name1 + " / " + our_idx2 + " / " + our_name2);
+        Log.d(TAG, "상대커플프로필에서 넘어온 인텐트 커플키:  "+other_couplekey);
 
-        Textview_Chat_Users.setText(our_name1 + ", " + our_name2 + ", " + other_name1 + ", " + other_name2);
+        intent_my_couplekey = intent.getStringExtra("intent_my_couplekey");
+        intent_other_couplekey = intent.getStringExtra("intent_other_couplekey");
+
+        Log.d(TAG, "채팅리스트에서 넘어온 인텐트 내 커플키: " +intent_my_couplekey);
+        Log.d(TAG, "채팅리스트에서 넘어온 인텐트 상대 커플키: "+intent_other_couplekey);
+
+
+        if(our_name1!= null && our_name2!=null  && other_name1!=null && other_name2!=null ) {
+            //인텐트로 넘어온 데이터들이 있으면 상대커플프로필에서 들어온 경우
+            Textview_Chat_Users.setText(our_name1 + ", " + our_name2 + ", " + other_name1 + ", " + other_name2);
+
+        } else if(intent_my_couplekey!= null && intent_other_couplekey!=null){
+            //채팅스트에서 커플키 2개를 인텐트로 받아온 경우
+
+            if(intent_other_couplekey.equals(applicationClass.getShared_Couplekey())) {
+                applicationClass.retroClient.chat_getIdx(intent_other_couplekey, intent_my_couplekey,new RetroCallback() {
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.d(TAG, "onError: "+t.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(int code, Object receivedData) {
+
+                        List<ThreeStringData> data = (List<ThreeStringData>)receivedData;
+                        Log.d(TAG, "onSuccess: 채팅 IDX "+data);
+                        String other_name1 = data.get(0).getSecond();
+                        String other_name2 = data.get(1).getSecond();
+
+                        String our_name1 = data.get(0).getFour();
+                        String our_name2 = data.get(1).getFour();
+
+                        Log.d(TAG, "상대 첫번째: "+ " / "+other_name1);
+                        Log.d(TAG, "상대 두번째: "  + " / "+other_name2);
+
+
+                        Log.d(TAG, "우리 첫번째: " + " / "+our_name1);
+                        Log.d(TAG, "우리 두번째: " + " / "+our_name2);
+
+                        Textview_Chat_Users.setText(our_name1 + ", " + our_name2 + ", " + other_name1 + ", " + other_name2);
+
+                    }
+
+                    @Override
+                    public void onFailure(int code) {
+                        Log.d(TAG, "onFailure: "+code);
+                    }
+                });
+
+            }else {
+                //채팅방 위 이름처리 - 이름의 순서를 맞추기 위해
+                applicationClass.retroClient.chat_getIdx(intent_my_couplekey, intent_other_couplekey,new RetroCallback() {
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.d(TAG, "onError: "+t.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(int code, Object receivedData) {
+
+                        List<ThreeStringData> data = (List<ThreeStringData>)receivedData;
+                        Log.d(TAG, "onSuccess: 채팅 IDX "+data);
+                        String other_name1 = data.get(0).getSecond();
+                        String other_name2 = data.get(1).getSecond();
+
+                        String our_name1 = data.get(0).getFour();
+                        String our_name2 = data.get(1).getFour();
+
+                        Log.d(TAG, "상대 첫번째: "+ " / "+other_name1);
+                        Log.d(TAG, "상대 두번째: "  + " / "+other_name2);
+
+
+                        Log.d(TAG, "우리 첫번째: " + " / "+our_name1);
+                        Log.d(TAG, "우리 두번째: " + " / "+our_name2);
+
+                        Textview_Chat_Users.setText(our_name1 + ", " + our_name2 + ", " + other_name1 + ", " + other_name2);
+
+                    }
+
+                    @Override
+                    public void onFailure(int code) {
+                        Log.d(TAG, "onFailure: "+code);
+                    }
+                });
+
+
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+
 //        String addr = "192.168.147.1"; //VMWARE 1 ->이거라고..? // 이클립스
 //        String addr = "192.168.30.1"; //VMWARE 8
 //        String addr = "192.168.123.103"; // 무선 LAN 어댑터 WI-FI -> 네트워크 연결 없음 뜸
 //        String addr = "116.37.162.156"; //네이버 검색  -> 쓰레드가 실행이 안됨 아예 (이게 맞는거 같긴 한데..)
 //        String addr = "115.115.33.333.156"; //아무거나 테스트 -> 에러메세지 잘 뜸
-        String addr = "13.125.182.117"; //VMWARE 1 ->이거라고..?
-        /*채팅방에서 들어왔을 때 추가해야함*/
-        //추가하세염
-
 
         /*이메일로 받아온 이름,프로필이미지  -> 후에 전송*/
         applicationClass.retroClient.chat_myname_myimg(MyEmail, new RetroCallback() {
@@ -166,9 +293,116 @@ public class ChatActivity extends AppCompatActivity {
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         getTime = simpleDate.format(mDate);
 
-        /*클라이언트 소켓 생성하여 서버로 전송하는 쓰레드*/
-        ConnectThread thread = new ConnectThread(addr);
-        thread.start();
+//        /*클라이언트 소켓 생성하여 서버로 전송하는 쓰레드*/
+//        ConnectThread thread = new ConnectThread(addr);
+//        thread.start();
+
+
+
+        /*방 체크 */
+        HashMap<String, Object> chatroom = new HashMap<>();
+
+        if(other_couplekey!=null){
+            /*상대커플액티비티에서 온경우*/
+            Log.d(TAG, ":방체크, 상대커플액티비티에서 온경우 ");
+            chatroom.put("other_couplekey",other_couplekey);
+            chatroom.put("my_couplekey",couplekey);
+        }else {
+            /*채팅리스트에서 넘어온 경우*/
+            if(intent_other_couplekey.equals(applicationClass.getShared_Couplekey())){
+                Log.d(TAG, ":방체크, 채팅리스트에서 온경우 + 순서꼬임 ");
+                //순서가 꼬인경우
+                chatroom.put("other_couplekey",intent_my_couplekey);
+                chatroom.put("my_couplekey",couplekey);
+            }else {
+                //일반적인 경우
+                Log.d(TAG, ":방체크, 채팅리스트에서 온경우 + 일반적  ");
+                chatroom.put("other_couplekey",intent_other_couplekey);
+                chatroom.put("my_couplekey",couplekey);
+            }
+
+        }
+
+
+        applicationClass.retroClient.chat_room_check(chatroom, new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess: "+code);
+                Result_login data = (Result_login) receivedData;
+                roomCheck = data.getServerResult();
+
+                Log.d(TAG, "방이 있는지 : "+roomCheck);
+                roomID = data.getCouplekey();
+
+                if(data.getServerResult().equals("roomX")){
+                    Log.d(TAG, "방 생성 X 기존방 불러오기 +룸아이디 :"+roomID);
+                    /*기존 방 데이터 유지*/
+                    get_chattings(roomID);
+                    /*클라이언트 소켓 생성하여 서버로 전송하는 쓰레드*/
+                    ConnectThread thread = new ConnectThread(addr);
+                    thread.start();
+
+
+
+                }else if(data.getServerResult().equals("roomO")){
+                    Log.d(TAG, "방 생성 O 새로 방만들기");
+                    /*새로운 방 만들기*/
+                    make_chat_room();
+                    /*클라이언트 소켓 생성하여 서버로 전송하는 쓰레드*/
+                    ConnectThread thread = new ConnectThread(addr);
+                    thread.start();
+
+
+
+                    applicationClass.retroClient.chat_get_roomid(couplekey, other_couplekey, new RetroCallback() {
+                        @Override
+                        public void onError(Throwable t) {
+                            Log.d(TAG, "onError: "+t.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(int code, Object receivedData) {
+                            Log.d(TAG, "onError: "+code);
+                            Result_login data = (Result_login) receivedData;
+                            roomCheck = data.getServerResult();
+
+                            Log.d(TAG, "방이 있는지cccccccccc : "+roomCheck);
+                            if_coupleAct_roomid = data.getCouplekey();
+                            Log.d(TAG, "상대커플액-방금생성된룸아이디: if_coupleAct_roomid"+if_coupleAct_roomid);
+                            SharedPreferences sharedPreferences = getSharedPreferences("ROOMID",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("if_coupleAct_roomid",if_coupleAct_roomid);
+                            editor.commit();
+                            Log.d(TAG, "상대커플액-방금생성된룸아이디: 쉐어드에 저장완료"+if_coupleAct_roomid);
+
+
+                        }
+
+                        @Override
+                        public void onFailure(int code) {
+                            Log.d(TAG, "onError: "+code);
+                        }
+                    });
+
+                 }
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+
+
+
+
+
+
 
 
         //허가 코드..? https://ddangeun.tistory.com/31
@@ -227,9 +461,20 @@ public class ChatActivity extends AppCompatActivity {
         Button_Chatting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences sharedPreferences1 = getSharedPreferences("ROOMID",MODE_PRIVATE);
+                first_roomid = sharedPreferences1.getString("if_coupleAct_roomid","no_roomID");
+                Log.d(TAG, "상대커플프로필에서 들어와 룸 id가 없어서 새로 받아온 룸ID : " +first_roomid);
+
                 sendmsg = Edittext_Chat_Write.getText().toString();
                 read_result ="0";
                 msg_type = "me";
+                if(sendmsg.contains(".jpg")||sendmsg.contains(".png")){
+                    msg_info = "img";
+                }else {
+                    msg_info = "text";
+                }
+
                 new Thread() {
                     @Override
                     public void run() {
@@ -237,12 +482,22 @@ public class ChatActivity extends AppCompatActivity {
                         try {
                             Log.d(TAG, "run: 메세지 전송 버튼 클릭시 이 로그가 실행됩니다.");
 
+
+
+
+
+
+
                             /*1. 서버로 보낼 값들을 정리한다. (이름,메세지,프사,시간,메세지 타입 )
                             * 2. 하나의 String으로 묶는다 (구분자 추가)
                             * 3. 서버로 불러온 다음 구분자별로 나눈다
                             * 4. 나눈 값들을 리사이클러뷰 어레이리스트에 추가한다. */
-
-                            String send = myname +"--"+ MyEmail +"--"+ sendmsg + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type ;
+                            if(roomID ==null){
+                                send = first_roomid +"--"+ myname +"--"+ MyEmail +"--"+ sendmsg + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type + "--" +msg_info ;
+                            }else {
+                                send = roomID +"--"+ myname +"--"+ MyEmail +"--"+ sendmsg + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type + "--" +msg_info ;
+                            }
+//                            String send = roomID +"--"+ myname +"--"+ MyEmail +"--"+ sendmsg + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type + "--" +msg_info ;
 //                            sendWriter.println(our_name1 +" : "+ sendmsg); //서버로 메세지 보낼때 println
                             sendWriter.println(send); //이름
 
@@ -260,9 +515,138 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+
+
+        /*이미지전송*/
+        Imageview_Chat_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "이미지 추가 버튼 클릭");
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true); //여러장 선택
+                startActivityForResult(intent,REQUEST_IMAGE_CODE);
+
+            }
+        });
+
+        Log.d(TAG, "onClick: 갤러리에서 나오면 여기 실행?");
+
+
+
     }//onCreate
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK && data != null){
+            if(data.getClipData()==null){
+                Toast.makeText(this, "다중선택이 안되는 기기입니다.", Toast.LENGTH_SHORT).show();
+            }else {
+                ClipData clipData = data.getClipData();
+                Log.d(TAG, "onActivityResult: clipData "+clipData);
+                if(clipData.getItemCount()>9){
+                    Toast.makeText(this, "사진은 9장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show();
+
+
+                }else if(clipData.getItemCount() > 0 && clipData.getItemCount() < 9) {
+                    /*실제 여러장 추가 되는 곳*/
+                    imageList = new ArrayList<>(); //사진 url 리스트
+                    multiList = new ArrayList<>(); //서버 전송을 위한 Multipart형식의 리스트
+
+                    for (int i = 0; i < clipData.getItemCount(); i++){
+                        Log.d(TAG, "여러장일때 (9장가능): "+getPath(clipData.getItemAt(i).getUri()));
+
+                        //갤러리에서 선택한 uri 리스트
+                        final String addimg = getPath(clipData.getItemAt(i).getUri());
+
+                        imageList.add(addimg);
+
+
+
+                        /*서버에 저장하기위해 보낼 리스트*/
+                        final File file = new File(addimg);
+                        // uri파일을 리퀘스트바디에 담을 수 있는 multipart로 파싱
+                        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                        /*name속성의 값 끝에 [] 를 붙혀 배열로 전송한다.*/
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file[]",file.getName(),requestFile);
+                        multiList.add(body);
+                        Log.d(TAG, "선택한 사진들 이름: "+file.getName());
+
+                        applicationClass.retroClient.chat_images_upload(multiList, new RetroCallback() {
+                            @Override
+                            public void onError(Throwable t) {
+                                Log.d(TAG, "onError: "+t.toString());
+                            }
+
+                            @Override
+                            public void onSuccess(int code, Object receivedData) {
+                                Log.d(TAG, "onSuccess: "+code);
+                                Result_login data = (Result_login)receivedData;
+                                Log.d(TAG, "onSuccess: "+data);
+                                //수정이 성공해서 이쪽으로 오면
+                                Toast.makeText(applicationClass, "이미지들 전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+//                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(int code) {
+                                Log.d(TAG, "onFailure: "+code);
+                            }
+                        });
+
+
+                        //////////////////////////////////////
+                        read_result ="0";
+                        msg_type = "me";
+                        msg_info = "img";
+
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                try {
+                                    Log.d(TAG, "챗: 갤러리에서 이미지 선택시 이 로그 실행.");
+                                    String send = roomID +"--"+ myname +"--"+ MyEmail +"--"+ file.getName() + "--" + getTime +"--"+ read_result +"--"+ myprofileimg +"--"+ msg_type + "--" +msg_info ;
+                                    sendWriter.println(send); //이름
+
+                                    Log.d(TAG, " 챗 ,서버로 이미지가 속한 이 메세지들을 보냅니다 : "+send);
+                                    sendWriter.flush(); //전송하고 남아있는 스트림을 싹 비운다 > 확인, 데이터보낼때마다 해줘야함
+                                    Edittext_Chat_Write.setText("");
+                                    Log.d(TAG, "챗 : 서버로 이미지 전송 완료 ( 이미지 갯수만큼)");
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.start();
+                        
+                        
+                        
+                        
+                        
+                        
+                        /////////////////////////////////////////
+                        
+                        
+                        
+                        
+                        
+
+
+
+                    }
+
+                }
+            }
+
+
+        }
+
+
+    }//onActivityResult() / 갤러리, 이미지
 
     /*서버로부터 데이터를 받아와 그 데이터를 화면에 뿌려주는 (리사이클러뷰에 추가하는) 부분*/
     class msgUpdate implements Runnable {
@@ -280,12 +664,13 @@ public class ChatActivity extends AppCompatActivity {
             /*리사이클러뷰에 추가 */
             Log.d(TAG, "서버에서 받아서 Runnable에 들어온 내용: " +msg);
             chat = msg.split("--");
-
+            Log.d(TAG, "run: "+chat);
             /*채팅방리스트에서 이방으로 들어와야겠지? */
-            if(chat[1].equals(MyEmail)){
-                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],chat[6]));
+            if(chat[2].equals(MyEmail)){
+
+                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],chat[6],chat[7],chat[8]));
             } else {
-                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],"other"));
+                chatDataArrayList.add(new ChatData(chat[0],chat[1],chat[2],chat[3],chat[4],chat[5],chat[6],"other",chat[8]));
             }
 //            Log.d(TAG, "run: ");
             recyclerView = findViewById(R.id.RCV_Chat);
@@ -301,9 +686,10 @@ public class ChatActivity extends AppCompatActivity {
 
 
     /*온스탑일때 소켓과 inputstream 닫기*/
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         try {
             if (socket != null) {
                 sendWriter.close();
@@ -317,6 +703,22 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "onStop: 온스탑에러" + e.toString());
         }
     }
+    //    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        try {
+//            if (socket != null) {
+//                sendWriter.close();
+//                socket.close();
+//            }
+////            sendWriter.close();
+////            socket.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.d(TAG, "onStop: 온스탑에러" + e.toString());
+//        }
+//    }
 
 
 
@@ -340,9 +742,24 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d(TAG, "Socket 생성, 연결.");
                 Log.d(TAG, "run: 런 실행");
 
+
+                /*방 구분 1. 서버로 roomID를 보낸다.*/
                 //outputstream을 할 수 있는 sendwritrer을 만들고 sendwritrer을 통해서 데이터를 보낸다. 보낼수 있게 생성해줌
                 sendWriter = new PrintWriter(socket.getOutputStream()); //socket.getOutputStream() -> 데이터를 보냄
+                if(roomID==null){ /*룸아이디가 있는 경우는 채팅리스트에서 온 경우*/
+                    SharedPreferences sharedPreferences1 = getSharedPreferences("ROOMID",MODE_PRIVATE);
+                    first_roomid = sharedPreferences1.getString("if_coupleAct_roomid","no_roomID");
+                    first_send = first_roomid;
+                    Log.d(TAG, "서버랑 연결되면 처음 보내는 룸 아이디: (커프액) "+first_send);
+                }else {
+                    first_send = roomID;
+                    Log.d(TAG, "서버랑 연결되면 처음 보내는 룸 아이디: (채팅리스트) "+first_send);
+                }
 
+
+                sendWriter.println(first_send); //이름
+                sendWriter.flush(); //전송하고 남아있는 스트림을 싹 비운다 > 확인, 데이터보낼때마다 해줘야함
+//                Log.d(TAG, "2. 서버로 커플키 2개를 전송완료! : "+send);
 
                 /*서버에서 수신되는 데이터들을 받는 곳곳*/
                 //듣는거, Input트림은 계속 돌아가고 있어야 데이터를 받는다.
@@ -433,5 +850,94 @@ public class ChatActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(chatAdapter);
 
     } //getChatRecyclerView()
+
+    /*기존에 채팅방이 없을 시 채팅방 만들어서 DB에 저장하는 메소드*/
+    public void make_chat_room(){
+        //1. DB에 채팅방을 새로 생성해준다.
+        HashMap<String, Object> chatroom = new HashMap<>();
+        chatroom.put("my_couplekey",couplekey);
+        chatroom.put("other_couplekey",other_couplekey);
+
+        applicationClass.retroClient.chat_room_add(chatroom, new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess: "+code);
+                Result_login data = (Result_login) receivedData;
+                Log.d(TAG, "채팅방 생성 여부 : "+data.getServerResult());
+                Log.d(TAG, "채팅방이 생성되었습니다");
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+    }//make_chat_room()
+
+
+
+    /*기존 채팅 내역 불러와서 리사이클러뷰에 뿌려주는 메서드*/
+    public void get_chattings(String room_idx){
+        applicationClass.retroClient.chat_get_chattings(room_idx, new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess: "+code);
+                List<ChatData> chattings= (List<ChatData>)receivedData;
+                Log.d(TAG, "서버에서 받아온 채팅리스트: "+chattings);
+                for (int i = 0; i<((List<ChatData>) receivedData).size(); i++){
+                    chatDataArrayList.add(chattings.get(i));
+                    Log.d(TAG, "onCreate: 채팅리스트"+chatDataArrayList);
+
+                    recyclerView = findViewById(R.id.RCV_Chat);
+                    recyclerView.setHasFixedSize(true);
+                    layoutManager = new LinearLayoutManager(ChatActivity.this);
+                    recyclerView.setLayoutManager(layoutManager);
+
+                    chatAdapter = new ChatAdapter(chatDataArrayList, ChatActivity.this);
+                    chatAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(chatAdapter);
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+
+
+
+
+    }//get_chattings();
+
+
+    /*이미지 절대 경로*/
+    public String getPath(Uri uri){
+
+        String [] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader cursorLoader = new CursorLoader(this, uri, proj, null, null, null);
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        return cursor.getString(index);
+
+    }
+
 
 }

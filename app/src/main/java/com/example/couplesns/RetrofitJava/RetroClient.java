@@ -1,5 +1,7 @@
 package com.example.couplesns.RetrofitJava;
 
+import com.example.couplesns.DataClass.ChatData;
+import com.example.couplesns.DataClass.ChatListData;
 import com.example.couplesns.DataClass.CommentData;
 import com.example.couplesns.DataClass.FollowData;
 import com.example.couplesns.DataClass.GalleryData;
@@ -1175,6 +1177,150 @@ public class RetroClient {
             }
         });
     }
+
+
+
+    /*채팅방생성 - chatActivity진입시, roomId가 없는 경우*/
+    public void chat_room_add(HashMap<String,Object> addChatRoom,final RetroCallback callback){
+        apiService.chat_room_add(addChatRoom).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_room_add/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*채팅방있는지없는지 체크, roomId가 없는 경우*/
+    public void chat_room_check(HashMap<String,Object> checkChatRoom,final RetroCallback callback){
+        apiService.chat_room_check(checkChatRoom).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_room_check/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+    /*채팅리스트 불러오기 - 채팅리스트 액티비티*/
+    public void chat_get_rooms(String couplekey, final RetroCallback callback){
+        apiService.chat_get_rooms(couplekey).enqueue(new Callback<List<ChatListData>>() {
+            @Override
+            public void onResponse(Call<List<ChatListData>> call, Response<List<ChatListData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatListData>>call, Throwable t) {
+                Log.d("get_chat_rooms", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*채팅 리스트 어댑터 안에서 상대방 이름만 불러오기*/
+    public void chat_get_othername(String other_couplekey, final RetroCallback callback){
+        apiService.chat_get_othername(other_couplekey).enqueue(new Callback<List<ThreeStringData>>() {
+            @Override
+            public void onResponse(Call<List<ThreeStringData>> call, Response<List<ThreeStringData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ThreeStringData>> call, Throwable t) {
+                Log.d("chat_get_othername", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*기존 방 있을시 채팅 데이터 불러오기*/
+    public void chat_get_chattings(String room_idx, final RetroCallback callback){
+        apiService.chat_get_chattings(room_idx).enqueue(new Callback<List<ChatData>>() {
+            @Override
+            public void onResponse(Call<List<ChatData>> call, Response<List<ChatData>> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatData>> call, Throwable t) {
+                Log.d("chat_get_othername", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*채팅 - 이미지 여러장 서버에 저장*/
+    public void chat_images_upload(ArrayList<MultipartBody.Part> filelist, final RetroCallback callback){
+        apiService.chat_images_upload(filelist).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로 chat_images_upload", "onFailure = 통신실패: "+t.toString());
+            }
+        });
+    }
+
+
+    /*상대커플프로필에서 채팅 열었을 시, roomid가 없어서 방을 만든것이므로, 만들고 난 다음 roomid를 불러와야 한다.
+    이때, 방을 만들면 내 커플키가 처음으로 들어가기 때문에 (순서바뀔일이없다) 내 값만 있으면 됨 */
+    public void chat_get_roomid(String my_couplekey, String other_couplekey, final RetroCallback callback){
+        apiService.chat_get_roomid(my_couplekey,other_couplekey).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_get_roomid/ ", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
 
 
 

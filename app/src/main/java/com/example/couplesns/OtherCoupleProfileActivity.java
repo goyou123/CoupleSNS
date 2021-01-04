@@ -56,6 +56,7 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
         //로그인한 유저의 이메일과 커플키
         couplekey = applicationClass.getShared_Couplekey();
         MyEmail = applicationClass.getShared_Email();
+        Log.d(TAG, "로그인한유저의 커플키 : "+couplekey + " / " +MyEmail);
 
         //xml
         Imageview_Otherprofile_back = (ImageView) findViewById(R.id.Imageview_Otherprofile_back); //뒤로가기
@@ -242,7 +243,7 @@ public class OtherCoupleProfileActivity extends AppCompatActivity {
                 intent.putExtra("our_idx2",our_idx2); // 내 커플 idx
                 intent.putExtra("our_name1",our_name1); // 내 이름
                 intent.putExtra("our_name2",our_name2); // 내 커플 이름
-
+                intent.putExtra("other_couplekey",intentCouplekey); // 상대방의 커플키
                 startActivity(intent);
                 //우리 idx
 

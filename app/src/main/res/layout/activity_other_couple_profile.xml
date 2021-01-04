@@ -164,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#fff"
-            android:text="커플채팅 신청"
+            android:text="이 커플과 채팅하기"
             android:textColor="@color/maincolor"
             android:textStyle="bold"
            />
