@@ -420,4 +420,42 @@ public interface RetroBaseApiService {
     @POST("chat_get_roomid.php")
     Call<Result_login> chat_get_roomid(@Field("my_couplekey") String my_couplekey, @Field("other_couplekey") String other_couplekey);
 
+
+    //FCM토큰값 DB에 저장
+    @FormUrlEncoded
+    @POST("chat_add_FCMtoken.php")
+    Call<Result_login> chat_add_FCMtoken(@Field("email") String email, @Field("token") String token);
+
+
+    //FCM토큰값 가져오기
+    @FormUrlEncoded
+    @POST("chat_get_tokens.php")
+    Call<ThreeStringData> chat_get_tokens(@FieldMap HashMap<String, Object> tokens);
+
+
+
+    //채팅방리스트 new 업데이트
+    @FormUrlEncoded
+    @POST("chat_list_new.php")
+    Call<Result_login> chat_list_new(@Field("roomID") String roomID);
+
+    //채팅방들어갈떄 채팅방리스트 new 의 값을 다시 0 으로 만듬
+    @FormUrlEncoded
+    @POST("chat_list_read.php")
+    Call<Result_login> chat_list_read(@Field("roomID") String roomID);
+
+
+    //채팅방 삭제하기
+    @FormUrlEncoded
+    @POST("chat_delete_room.php")
+    Call<Result_login> chat_delete_room(@Field("roomID") String roomID);
+
+
+    //FCM으로 채팅들어왔을때 룸아이디를 가지고 커플키 2개 뽑아오기
+    @FormUrlEncoded
+    @POST("chat_fcm_get_couplekeys.php")
+    Call<ThreeStringData> chat_fcm_get_couplekeys(@Field("roomID") String roomID);
+
+
+
 }

@@ -30,7 +30,7 @@ public class ApplicationClass extends Application {
     String autoLoginKey;
     String sharedcouplekey;
     RetroClient retroClient;
-
+    String token;
 
     public static final int SEC = 60;
     public static final int MIN = 60;
@@ -66,6 +66,11 @@ public class ApplicationClass extends Application {
         //이메일값으로 그 이메일에 해당하는 커플키 가져오기 - shared저장 signup2
         SharedPreferences sharedPreferences = getSharedPreferences("CoupleKey",MODE_PRIVATE);
         sharedcouplekey = sharedPreferences.getString(autoLoginKey,"no_key_login");
+
+        //이메일값으로 그 이메일에 해당하는 커플키 가져오기 - shared저장 signup2
+        SharedPreferences sharedPreferences2 = getSharedPreferences("FCM_TOKEN",MODE_PRIVATE);
+        token = sharedPreferences2.getString("token","no_Token");
+
     } //OnCreate
 
     //로그인한 사람 이메일 가져오는 메소드
@@ -81,6 +86,14 @@ public class ApplicationClass extends Application {
         sharedcouplekey = sharedPreferences.getString(autoLoginKey,"no_key_login");
         return sharedcouplekey;
     }
+
+    //로그인한 사람 토큰값 가져오는 메소드
+    public String getShared_Token(){
+        SharedPreferences sharedPreferences2 = getSharedPreferences("FCM_TOKEN",MODE_PRIVATE);
+        token = sharedPreferences2.getString("token","no_Token");
+        return token;
+    }
+
 
     //레트로핏 빌드를 어댑터에서 사용하기 위해 리턴함 - StoryAdapter
     public RetroClient retroInAdapter(){

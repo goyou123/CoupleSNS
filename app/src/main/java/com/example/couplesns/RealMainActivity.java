@@ -28,6 +28,8 @@ import com.example.couplesns.DataClass.UserData;
 import com.example.couplesns.RetrofitJava.RetroCallback;
 import com.example.couplesns.RetrofitJava.RetroClient;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +67,21 @@ public class RealMainActivity extends AppCompatActivity {
 
         //applicationClass
         applicationClass = (ApplicationClass) getApplicationContext();
+
+        //FCM 토큰값 생성
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d("토큰 : Token Value", token);
+
+        //자동로그인을 위해 입력 email값 shared에 저장
+        SharedPreferences sharedPreferences3 = getSharedPreferences("FCM_TOKEN",MODE_PRIVATE);
+        SharedPreferences.Editor editor3 = sharedPreferences3.edit();
+        editor3.putString("token",token);
+        editor3.commit();
+
+        //DB에도 저장 (밑에)
+
+
+
 
 
         //xml연결
@@ -173,6 +190,33 @@ public class RealMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+        //토큰값 DB에 저장
+        applicationClass.retroClient.chat_add_FCMtoken(myEmail, token, new RetroCallback() {
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+            }
+
+            @Override
+            public void onSuccess(int code, Object receivedData) {
+                Log.d(TAG, "onSuccess: "+code);
+                Result_login data = (Result_login)receivedData;
+                String addtoken = data.getServerResult();
+                if(addtoken.equals("true")){
+                    Log.d(TAG, "토큰: DB에 추가 성공");
+                }
+
+            }
+
+            @Override
+            public void onFailure(int code) {
+                Log.d(TAG, "onFailure: "+code);
+            }
+        });
+
 
 
     } //OnCreate

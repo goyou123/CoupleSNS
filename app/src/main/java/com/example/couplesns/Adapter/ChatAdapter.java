@@ -161,8 +161,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                     getUser_profile()).fitCenter().into(holder.Otherchat_profileimg);
 
             holder.Otherchat_user_name.setText(ChatDataList.get(position).getUser_name());
-//            holder.Otherchat_time.setText(ChatDataList.get(position).getChat_time());
-//            holder.Otherchat_read_result.setText(ChatDataList.get(position).getRead_result());
+
 
             if(msg_info.equals("img")){
                 holder.Otherchat_image.setVisibility(View.VISIBLE);
@@ -177,12 +176,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
                 Glide.with(holder.itemView).load(serverImageRootchat + ChatDataList.get(position).getMessage()).fitCenter().into(holder.Otherchat_image);
                 holder.Otherchat_time2.setText(ChatDataList.get(position).getChat_time());
-                holder.Otherchat_read_result2.setText(ChatDataList.get(position).getRead_result());
+//                holder.Otherchat_read_result2.setText(ChatDataList.get(position).getRead_result()); ㅇ
                 /*시간 옆 읽음처리 배치고!!!!!!!!!!!!!*/
             }else if ( msg_info.equals("text")){
                 holder.Otherchat_message.setText(ChatDataList.get(position).getMessage());
                 holder.Otherchat_time.setText(ChatDataList.get(position).getChat_time());
-                holder.Otherchat_read_result.setText(ChatDataList.get(position).getRead_result());
+//                holder.Otherchat_read_result.setText(ChatDataList.get(position).getRead_result()); ㅇ
             }
 
         }

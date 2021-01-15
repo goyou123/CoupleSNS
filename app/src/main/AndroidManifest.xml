@@ -16,7 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChatListActivity"></activity>
+<!--        <service-->
+<!--            android:name=".MyFirebaseMessagingService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"></service>-->
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity android:name=".ChatListActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".FollowActivity" />

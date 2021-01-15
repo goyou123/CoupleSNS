@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "801638212051",
+    "project_id": "couples-a0682",
+    "storage_bucket": "couples-a0682.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801638212051:android:8a046585ddd67abd064f26",
+        "android_client_info": {
+          "package_name": "com.example.couplesns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801638212051-1b7ud9bnub917dblc0goh59ti7oh546s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZid-ZG_E4hwGnmEP4KFtn4StrO33LYUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801638212051-1b7ud9bnub917dblc0goh59ti7oh546s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

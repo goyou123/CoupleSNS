@@ -1320,6 +1320,132 @@ public class RetroClient {
     }
 
 
+    /*유저정보에 FFCM토큰값 저장 - 메인에서 일단*/
+    public void chat_add_FCMtoken(String email, String token, final RetroCallback callback){
+        apiService.chat_add_FCMtoken(email,token).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_add_token", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*FCM전송을 위해 토큰값들 가져오기*/
+    public void chat_get_tokens(HashMap tokens ,final RetroCallback callback){
+        apiService.chat_get_tokens(tokens).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_get_tokens", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+    /*채팅리스트에 new 업데이트*/
+    public void chat_list_new(String roomID ,final RetroCallback callback){
+        apiService.chat_list_new(roomID).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_list_new", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+    /*채팅리스트 카운트값 0 으로 - 채팅 액티비티 들어갈때*/
+    public void chat_list_read(String roomID ,final RetroCallback callback){
+        apiService.chat_list_read(roomID).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_list_read", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+    /*채팅리스트에서 방 나가기*/
+    public void chat_delete_room(String roomID ,final RetroCallback callback){
+        apiService.chat_delete_room(roomID).enqueue(new Callback<Result_login>() {
+            @Override
+            public void onResponse(Call<Result_login> call, Response<Result_login> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result_login> call, Throwable t) {
+                Log.d("레트로핏 chat_delete_room", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+    /*채팅화면에서 이메일을통해 내 이름 , 이미지사진 주소 가져오기*/
+    public void chat_fcm_get_couplekeys(String roomID, final RetroCallback callback){
+        apiService.chat_fcm_get_couplekeys(roomID).enqueue(new Callback<ThreeStringData>() {
+            @Override
+            public void onResponse(Call<ThreeStringData> call, Response<ThreeStringData> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.code(),response.body());
+                }else {
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ThreeStringData> call, Throwable t) {
+                Log.d("chat_fcm_get_couplekeys", "onFailure: "+t.toString());
+            }
+        });
+    }
+
+
+
+
+
+
+
 
 
 

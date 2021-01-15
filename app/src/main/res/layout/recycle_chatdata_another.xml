@@ -76,7 +76,7 @@
         android:id="@+id/Otherchat_read_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1"
+        android:text=" "
         app:layout_constraintLeft_toRightOf="@id/Otherchat_time"
         app:layout_constraintBottom_toBottomOf="@id/Otherchat_time"
         android:layout_marginLeft="5dp"
